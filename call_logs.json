@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-08-04T21:43:09.744170+00:00",
+  "payload": [
+    {
+      "type": "calllog",
+      "name": "Mama",
+      "number": "+233546093288",
+      "callType": "CallType.outgoing",
+      "timestamp": "2025-08-04T20:35:24.405"
+    },
+    {
+      "type": "calllog",
+      "name": "Qwakudynamic\ud83d\udc79\ud83d\udc79",
+      "number": "+233538107796",
+      "callType": "CallType.outgoing",
+      "timestamp": "2025-08-04T20:34:20.668"
+    },
+    {
+      "type": "calllog",
+      "name": "Nana Adjei",
+      "number": "+233554147466",
+      "callType": "CallType.outgoing",
+      "timestamp": "2025-08-04T17:38:45.795"
+    },
+    {
+      "type": "calllog",
+      "name": "Qwakudynamic\ud83d\udc79\ud83d\udc79",
+      "number": "+233538107796",
+      "callType": "CallType.missed",
+      "timestamp": "2025-08-04T12:43:10.889"
+    },
+    {
+      "type": "calllog",
+      "name": "Qwakudynamic\ud83d\udc79\ud83d\udc79",
+      "number": "+233538107796",
+      "callType": "CallType.missed",
+      "timestamp": "2025-08-04T12:42:06.354"
+    }
+  ]
+}
