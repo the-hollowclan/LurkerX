@@ -1,4 +1,9 @@
 __pycache__/
+build/
+dist/
+*.py
 flutter_codebase.code-workspace
 flutter_codebase/
 localtonet.exe
+call_logs.json
+received_sms.json

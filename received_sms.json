@@ -1,35 +1,35 @@
 {
-  "timestamp": "2025-08-04T21:43:07.961719+00:00",
+  "timestamp": "2025-08-05T15:51:05.378358+00:00",
   "payload": [
     {
       "type": "sms",
       "address": "MobileMoney",
-      "body": "Your payment of GHS 12.00 to MTN AIRTIME has been completed at 2025-08-04 15:06:34. Your new balance: GHS 32.64. Fee was GHS 0.00 Tax was GHS -. Reference: -. Financial Transaction Id: 62345128311. External Transaction Id: 62345128311.Download the MoMo App for a Faster & Easier Experience Click here: https://bit.ly/downloadMyMoMo",
-      "timestamp": "2025-08-04T15:06:35.826"
+      "body": "Payment made for GHS 26.50 to FRANCIS AMANKWAH. Current Balance: GHS 56.14. Available Balance: GHS 56.14. Reference: ernest. Transaction ID: 62404692682. Fee charged: GHS 0.00 TAX charged: GHS 0.00.",
+      "timestamp": "2025-08-05T14:48:54.421"
     },
     {
       "type": "sms",
       "address": "MobileMoney",
-      "body": "<#> DO NOT share this SMS. This OTP is required to access your wallet so keep it private. MTN staff will NEVER ask for it.  Enter code :5651 to complete your login. N/RywfrtIZL 3XTs0SAuJcW RdbS6eMOXvx Tg6mmsWBV/l l+/DM+Y0kqw 8IQp6cNCYgn L9X0x07s5X9 +BQ+l2vBZvQ",
-      "timestamp": "2025-08-04T15:06:32.128"
+      "body": "Payment made for GHS 26.50 to FRANCIS AMANKWAH Current Balance: GHS 56.14 . Available Balance: GHS 56.14. Reference: ernest. Transaction ID: 62404692682. Fee charged: GHS0.00 Tax charged: 0. Download the MoMo App for a Faster & Easier Experience. Click here: https://bit.ly/downloadMyMoMo",
+      "timestamp": "2025-08-05T14:48:53.458"
     },
     {
       "type": "sms",
-      "address": "Telecel",
-      "body": "Did you know Telecel SOS is a convenient, hassle-free way to borrow airtime? No hidden charges or high fees. Dial *505# to try it today and experience the ease! T&C apply",
-      "timestamp": "2025-08-04T14:50:15.912"
+      "address": "+233530237810",
+      "body": "Ok",
+      "timestamp": "2025-08-05T14:37:35.929"
     },
     {
       "type": "sms",
-      "address": "5040",
-      "body": "JACKPOT ALERT! 0245121140 your spin is waitinga\u20ac\u00a1You could win 30,000 GHS and other epic prizes! Reply VIP to play now. Reply VIP",
-      "timestamp": "2025-08-04T13:41:56.723"
+      "address": "+233530237810",
+      "body": "Boy what is the ecobank code for paying fees",
+      "timestamp": "2025-08-05T14:33:31.919"
     },
     {
       "type": "sms",
       "address": "MobileMoney",
-      "body": "Payment received for GHS 20.00 from EDMOND OSEI OWUSU  Current Balance: GHS 44.64 . Available Balance: GHS 44.64. Reference: . Transaction ID: 62329810639. TRANSACTION FEE: 0.00",
-      "timestamp": "2025-08-04T10:53:41.374"
+      "body": "Your payment of GHS 12.00 to MTN AIRTIME has been completed at 2025-08-05 12:11:37. Your new balance: GHS 82.64. Fee was GHS 0.00 Tax was GHS -. Reference: -. Financial Transaction Id: 62395237932. External Transaction Id: 62395237932.Download the MoMo App for a Faster & Easier Experience Click here: https://bit.ly/downloadMyMoMo",
+      "timestamp": "2025-08-05T12:11:49.812"
     }
   ]
 }
