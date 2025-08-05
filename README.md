@@ -25,7 +25,10 @@
 
 ## Guides
 <a href="https://github.com/the-hollowclan/LurkerX/blob/main/InstallationGuide.md">
-  <img src="https://img.shields.io/badge/HOW_TO_INSTALL-teal?style=for-the-badge&logo=website">
+  <img src="https://img.shields.io/badge/HOW TO INSTALL-teal?style=for-the-badge&logo=website">
+</a>
+<a href="https://github.com/the-hollowclan/LurkerX/blob/main/UsageGuide.md">
+  <img src="https://img.shields.io/badge/HOW TO USE-teal?style=for-the-badge&logo=website">
 </a>
 
 **Disclaimer:**
