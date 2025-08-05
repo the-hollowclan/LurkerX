@@ -5,10 +5,10 @@
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0-green?style=for-the-badge">
-  <img src="https://img.shields.io/github/license/nemesis-guy/LurkerX?style=for-the-badge&color=darkgreen">
-  <img src="https://img.shields.io/github/stars/nemesis-guy/LurkerX?style=for-the-badge&color=teal">
-  <img src="https://img.shields.io/github/forks/nemesis-guy/LurkerX?style=for-the-badge&color=cyan">
-  <img src="https://img.shields.io/github/issues/nemesis-guy/LurkerX?style=for-the-badge&color=red">
+  <img src="https://img.shields.io/github/license/the-hollowclan/LurkerX?style=for-the-badge&color=darkgreen">
+  <img src="https://img.shields.io/github/stars/the-hollowclan/LurkerX?style=for-the-badge&color=teal">
+  <img src="https://img.shields.io/github/forks/the-hollowclan/LurkerX?style=for-the-badge&color=cyan">
+  <img src="https://img.shields.io/github/issues/the-hollowclan/LurkerX?style=for-the-badge&color=red">
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Author-nemesis--guy-blue?style=flat-square">
@@ -24,17 +24,8 @@
 **LurkerX** is a free and open-source malware project designed for ethical research and educational purposes. This project aims to provide researchers and security professionals with a powerful tool to understand and analyze the behavior of sophisticated botnet(spyware) applications on Android devices and Windows computers.
 
 ## Guides
-<a href="https://github.com/nemesis-guy/LurkerX/blob/main/InstallationGuide.md">
+<a href="https://github.com/the-hollowclan/LurkerX/blob/main/InstallationGuide.md">
   <img src="https://img.shields.io/badge/HOW_TO_INSTALL-teal?style=for-the-badge&logo=website">
-</a>
-<a href="https://nemesisguy.onrender.com/blog/how_to_hack_anyone_using_spyware.html">
-  <img src="https://img.shields.io/badge/OPEN_SOURCE_MALWARES-teal?style=for-the-badge&logo=website">
-</a>
-<a href="https://nemesisguy.onrender.com/blog/how_to_hack_anyone_using_spyware.html">
-  <img src="https://img.shields.io/badge/SAMPLE_APK_MALWARES-teal?style=for-the-badge&logo=website">
-</a>
-<a href="https://nemesisguy.onrender.com/blog/how_to_hack_anyone_using_spyware.html">
-  <img src="https://img.shields.io/badge/SAMPLE_DESKTOP_MALWARES-teal?style=for-the-badge&logo=website">
 </a>
 
 **Disclaimer:**
