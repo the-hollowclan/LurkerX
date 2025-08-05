@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">उत्तर द्या</string>
+    <string name="call_notification_answer_video_action">व्हिडिओ</string>
+    <string name="call_notification_decline_action">नकार द्या</string>
+    <string name="call_notification_hang_up_action">कॉल बंद करा</string>
+    <string name="call_notification_incoming_text">इनकमिंग कॉल</string>
+    <string name="call_notification_ongoing_text">सुरू असलेला कॉल</string>
+    <string name="call_notification_screening_text">इनकमिंग कॉल स्क्रीन करत आहे</string>
+    <string name="copy_toast_msg">लिंक क्लिपबोर्डवर कॉपी केली</string>
+    <string name="status_bar_notification_info_overflow">९९९+</string>
+</resources>

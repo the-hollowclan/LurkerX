@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Адказаць</string>
+    <string name="call_notification_answer_video_action">Відэа</string>
+    <string name="call_notification_decline_action">Адхіліць</string>
+    <string name="call_notification_hang_up_action">Завяршыць</string>
+    <string name="call_notification_incoming_text">Уваходны выклік</string>
+    <string name="call_notification_ongoing_text">Бягучы выклік</string>
+    <string name="call_notification_screening_text">Фільтраванне ўваходнага выкліку</string>
+    <string name="copy_toast_msg">Спасылка скапіравана ў буфер абмену</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

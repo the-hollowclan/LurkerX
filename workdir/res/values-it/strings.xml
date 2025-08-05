@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Rispondi</string>
+    <string name="call_notification_answer_video_action">Video</string>
+    <string name="call_notification_decline_action">Rifiuta</string>
+    <string name="call_notification_hang_up_action">Riaggancia</string>
+    <string name="call_notification_incoming_text">Chiamata in arrivo</string>
+    <string name="call_notification_ongoing_text">Chiamata in corso</string>
+    <string name="call_notification_screening_text">Applicazione filtro a chiamata in arrivo</string>
+    <string name="copy_toast_msg">Link copiato negli appunti</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

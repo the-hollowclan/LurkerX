@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Жооп берүү</string>
+    <string name="call_notification_answer_video_action">Видео</string>
+    <string name="call_notification_decline_action">Четке кагуу</string>
+    <string name="call_notification_hang_up_action">Чалууну бүтүрүү</string>
+    <string name="call_notification_incoming_text">Кирүүчү чалуу</string>
+    <string name="call_notification_ongoing_text">Учурдагы чалуу</string>
+    <string name="call_notification_screening_text">Кирүүчү чалууну иргөө</string>
+    <string name="copy_toast_msg">Шилтеме буферге көчүрүлдү</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

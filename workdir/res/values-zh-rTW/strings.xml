@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">接聽</string>
+    <string name="call_notification_answer_video_action">視訊</string>
+    <string name="call_notification_decline_action">拒接</string>
+    <string name="call_notification_hang_up_action">掛斷</string>
+    <string name="call_notification_incoming_text">來電</string>
+    <string name="call_notification_ongoing_text">通話中</string>
+    <string name="call_notification_screening_text">正在過濾來電</string>
+    <string name="copy_toast_msg">已將連結複製到剪貼簿</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

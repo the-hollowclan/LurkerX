@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Contestar</string>
+    <string name="call_notification_answer_video_action">Vídeo</string>
+    <string name="call_notification_decline_action">Rexeitar</string>
+    <string name="call_notification_hang_up_action">Colgar</string>
+    <string name="call_notification_incoming_text">Chamada entrante</string>
+    <string name="call_notification_ongoing_text">Chamada en curso</string>
+    <string name="call_notification_screening_text">Filtrando chamada entrante</string>
+    <string name="copy_toast_msg">Copiouse a ligazón no portapapeis</string>
+    <string name="status_bar_notification_info_overflow">>999</string>
+</resources>

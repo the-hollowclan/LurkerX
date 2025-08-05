@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="activityAction" format="string" />
+    <attr name="activityName" format="string" />
+    <attr name="alpha" format="float" />
+    <attr name="alwaysExpand" format="boolean" />
+    <attr name="animationBackgroundColor" format="color" />
+    <attr name="clearTop" format="boolean" />
+    <attr name="finishPrimaryWithPlaceholder">
+        <enum name="always" value="1" />
+        <enum name="adjacent" value="2" />
+    </attr>
+    <attr name="finishPrimaryWithSecondary">
+        <enum name="never" value="0" />
+        <enum name="always" value="1" />
+        <enum name="adjacent" value="2" />
+    </attr>
+    <attr name="finishSecondaryWithPrimary">
+        <enum name="never" value="0" />
+        <enum name="always" value="1" />
+        <enum name="adjacent" value="2" />
+    </attr>
+    <attr name="font" format="reference" />
+    <attr name="fontProviderAuthority" format="string" />
+    <attr name="fontProviderCerts" format="reference" />
+    <attr name="fontProviderFetchStrategy">
+        <enum name="blocking" value="0" />
+        <enum name="async" value="1" />
+    </attr>
+    <attr name="fontProviderFetchTimeout" format="integer">
+        <enum name="forever" value="-1" />
+    </attr>
+    <attr name="fontProviderPackage" format="string" />
+    <attr name="fontProviderQuery" format="string" />
+    <attr name="fontProviderSystemFontFamily" format="string" />
+    <attr name="fontStyle">
+        <enum name="normal" value="0" />
+        <enum name="italic" value="1" />
+    </attr>
+    <attr name="fontVariationSettings" format="string" />
+    <attr name="fontWeight" format="integer" />
+    <attr name="lStar" format="float" />
+    <attr name="nestedScrollViewStyle" format="reference" />
+    <attr name="placeholderActivityName" format="string" />
+    <attr name="primaryActivityName" format="string" />
+    <attr name="queryPatterns" format="reference" />
+    <attr name="secondaryActivityAction" format="string" />
+    <attr name="secondaryActivityName" format="string" />
+    <attr name="shortcutMatchRequired" format="boolean" />
+    <attr name="splitLayoutDirection">
+        <enum name="locale" value="0" />
+        <enum name="ltr" value="1" />
+        <enum name="rtl" value="2" />
+        <enum name="topToBottom" value="3" />
+        <enum name="bottomToTop" value="4" />
+    </attr>
+    <attr name="splitMaxAspectRatioInLandscape" format="float">
+        <enum name="alwaysAllow" value="0" />
+        <enum name="alwaysDisallow" value="-1" />
+    </attr>
+    <attr name="splitMaxAspectRatioInPortrait" format="float">
+        <enum name="alwaysAllow" value="0" />
+        <enum name="alwaysDisallow" value="-1" />
+    </attr>
+    <attr name="splitMinHeightDp" format="integer" />
+    <attr name="splitMinSmallestWidthDp" format="integer" />
+    <attr name="splitMinWidthDp" format="integer" />
+    <attr name="splitRatio" format="float" />
+    <attr name="stickyPlaceholder" format="boolean" />
+    <attr name="tag" format="string" />
+    <attr name="ttcIndex" format="integer" />
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">جواب دیں</string>
+    <string name="call_notification_answer_video_action">ویڈیو</string>
+    <string name="call_notification_decline_action">مسترد کریں</string>
+    <string name="call_notification_hang_up_action">منقطع کر دیں</string>
+    <string name="call_notification_incoming_text">اِن کمنگ کال</string>
+    <string name="call_notification_ongoing_text">جاری کال</string>
+    <string name="call_notification_screening_text">اِن کمنگ کال کی اسکریننگ</string>
+    <string name="copy_toast_msg">لنک کلپ بورڈ پر کاپی ہو گیا</string>
+    <string name="status_bar_notification_info_overflow">+999</string>
+</resources>

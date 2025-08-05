@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Prijať</string>
+    <string name="call_notification_answer_video_action">Video</string>
+    <string name="call_notification_decline_action">Odmietnuť</string>
+    <string name="call_notification_hang_up_action">Zložiť</string>
+    <string name="call_notification_incoming_text">Prichádzajúci hovor</string>
+    <string name="call_notification_ongoing_text">Prebiehajúci hovor</string>
+    <string name="call_notification_screening_text">Preveruje sa prichádzajúci hovor</string>
+    <string name="copy_toast_msg">Odkaz bol skopírovaný do schránky</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

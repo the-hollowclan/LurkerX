@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Javob berish</string>
+    <string name="call_notification_answer_video_action">Video</string>
+    <string name="call_notification_decline_action">Rad etish</string>
+    <string name="call_notification_hang_up_action">Tugatish</string>
+    <string name="call_notification_incoming_text">Kiruvchi chaqiruv</string>
+    <string name="call_notification_ongoing_text">Joriy chaqiruv</string>
+    <string name="call_notification_screening_text">Kiruvchi chaqiruvni filtrlash</string>
+    <string name="copy_toast_msg">Havoladan vaqtinchalik xotiraga nusxa olindi</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

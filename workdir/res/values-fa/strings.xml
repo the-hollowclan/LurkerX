@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">پاسخ دادن</string>
+    <string name="call_notification_answer_video_action">ویدیو</string>
+    <string name="call_notification_decline_action">رد کردن</string>
+    <string name="call_notification_hang_up_action">قطع تماس</string>
+    <string name="call_notification_incoming_text">تماس ورودی</string>
+    <string name="call_notification_ongoing_text">تماس درحال انجام</string>
+    <string name="call_notification_screening_text">درحال غربال کردن تماس ورودی</string>
+    <string name="copy_toast_msg">پیوند در بریده‌دان کپی شد</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

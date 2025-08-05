@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Erantzun</string>
+    <string name="call_notification_answer_video_action">Bideoa</string>
+    <string name="call_notification_decline_action">Baztertu</string>
+    <string name="call_notification_hang_up_action">Amaitu deia</string>
+    <string name="call_notification_incoming_text">Sarrerako deia</string>
+    <string name="call_notification_ongoing_text">Deia abian da</string>
+    <string name="call_notification_screening_text">Sarrerako dei bat bistaratzen</string>
+    <string name="copy_toast_msg">Arbelean kopiatu da esteka</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

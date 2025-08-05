@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">Одговори</string>
+    <string name="call_notification_answer_video_action">Видео</string>
+    <string name="call_notification_decline_action">Одбиј</string>
+    <string name="call_notification_hang_up_action">Спушти</string>
+    <string name="call_notification_incoming_text">Дојдовен повик</string>
+    <string name="call_notification_ongoing_text">Тековен повик</string>
+    <string name="call_notification_screening_text">Проверка на дојдовен повик</string>
+    <string name="copy_toast_msg">Линкот е копиран во привремена меморија</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

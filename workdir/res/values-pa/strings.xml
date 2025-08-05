@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_notification_answer_action">ਜਵਾਬ ਦਿਓ</string>
+    <string name="call_notification_answer_video_action">ਵੀਡੀਓ</string>
+    <string name="call_notification_decline_action">ਅਸਵੀਕਾਰ ਕਰੋ</string>
+    <string name="call_notification_hang_up_action">ਸਮਾਪਤ ਕਰੋ</string>
+    <string name="call_notification_incoming_text">ਇਨਕਮਿੰਗ ਕਾਲ</string>
+    <string name="call_notification_ongoing_text">ਜਾਰੀ ਕਾਲ</string>
+    <string name="call_notification_screening_text">ਇਨਕਮਿੰਗ ਕਾਲ ਦੀ ਸਕ੍ਰੀਨਿੰਗ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ</string>
+    <string name="copy_toast_msg">"ਲਿੰਕ ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਕਾਪੀ ਹੋ ਗਿਆ"</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+</resources>

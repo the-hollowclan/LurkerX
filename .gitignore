@@ -1,7 +1,8 @@
 __pycache__/
 build/
 dist/
-*.py
+workdir/*
+release/
 flutter_codebase.code-workspace
 flutter_codebase/
 localtonet.exe
@@ -9,3 +10,7 @@ call_logs.json
 received_sms.json
 *.zip
 *.tar.gz
+*.spec
+*.py
+lurkerx.exe
+lurkerx
