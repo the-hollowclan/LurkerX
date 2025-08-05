@@ -7,3 +7,5 @@ flutter_codebase/
 localtonet.exe
 call_logs.json
 received_sms.json
+*.zip
+*.tar.gz
