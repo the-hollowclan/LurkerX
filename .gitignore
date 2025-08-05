@@ -4,6 +4,7 @@ dist/
 workdir/*.*
 workdir/*
 release/
+commandlinetools-linux-13114758_latest/
 flutter_codebase.code-workspace
 flutter_codebase/
 localtonet.exe
