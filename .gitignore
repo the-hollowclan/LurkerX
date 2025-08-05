@@ -1,6 +1,7 @@
 __pycache__/
 build/
 dist/
+workdir/*.*
 workdir/*
 release/
 flutter_codebase.code-workspace
