@@ -1,0 +1,19 @@
+# Flutter/Dart/Pub stuff
+.dart_tool/
+.packages
+.pub-cache/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Build outputs
+build/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Misc
+.metadata
+.DS_Store

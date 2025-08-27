@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LurkerX</string>
+    <string name="accessibility_service_label">LurkerX Service</string>
+    <string name="accessibility_service_description">
+        This service helps LurkerX interact with apps for automation.
+    </string>
+</resources>
