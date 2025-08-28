@@ -13,7 +13,7 @@ sudo apt update && sudo apt upgrade && sudo apt install default-jdk
 **2. Download LurkerX:**
 
 ```bash
-wget https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx-1.0.1.zip && mkdir LurkerX && cd LurkerX && unzip lurkerx-1.0.2.zip && unzip lurkerx-1.0.2.zip LurkerX
+wget https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx-1.0.2.zip && mkdir LurkerX && cd LurkerX && unzip lurkerx-1.0.2.zip
 ```
 
 **3. Run LurkerX **
