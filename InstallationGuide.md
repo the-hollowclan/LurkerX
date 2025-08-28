@@ -13,7 +13,7 @@ sudo apt update && sudo apt upgrade && sudo apt install default-jdk
 **2. Download LurkerX:**
 
 ```bash
-wget [https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx-1.0.2.zip](https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx1.0.2.zip) && mkdir LurkerX && cd LurkerX && unzip lurkerx1.0.2.zip
+wget https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx1.0.2.zip && mkdir LurkerX && cd LurkerX && unzip lurkerx1.0.2.zip
 ```
 
 **3. Run LurkerX **
@@ -36,7 +36,7 @@ javac 17.0.14
 ```
 
 **1. Download LurkerX**<br>
-<a href="https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx-1.0.2.zip">
+<a href="https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx1.0.2.zip">
   <img src="https://img.shields.io/badge/DOWNLOAD LURKERX-teal?style=for-the-badge&logo=website">
 </a>
 
