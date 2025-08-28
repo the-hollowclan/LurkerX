@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/Author-the-hollowclan-blue?style=flat-square">
   <img src="https://img.shields.io/badge/Open%20Source-Yes-darkgreen?style=flat-square">
   <img src="https://img.shields.io/badge/Maintained%3F-Yes-lightblue?style=flat-square">
-  <img src="https://img.shields.io/badge/Written%20In-Python-darkcyan?style=flat-square">
+  <img src="https://img.shields.io/badge/Written%20In-Python,%20Dart-darkcyan?style=flat-square">
 </p>
 
 ## LAUNCHED ON (4TH AUGUST, 2024) - STABLE RELEASE
