@@ -3,7 +3,6 @@
 This guide provides basic step-by-step instructions on how to use LurkerX
 
 ## How to Remotely Receive Captured data (Basic default option)
-### First edit the choices.ini to your preferences
 
 1. Launch *server.exe* and leave it running unless you wanna stop the server.
 2. Open your browser and create account on <a href="https://localtonet.com">LOCALTONET</a>.
@@ -28,6 +27,6 @@ Default keystore file for signing APK after modification
 This file stores your prefernce app details(name, icon), and behaviour(auto-hide, monitoring capabilities and features).
 
 ## Additional Notes
-
+- You can edit the information in choices.ini, but if you don't understand any of the properties, just don't erase it, leave it be.
 - If you encounter any errors, please refer to the LurkerX documentation or seek assistance from the community.
 - This guide assumes you have basic knowledge of using the command line.
