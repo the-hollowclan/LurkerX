@@ -30,6 +30,8 @@ javac --version
 ```
 If it shows something like this then it is installed.
 ```
+PS C:\Users\User> javac --version
+javac 17.0.14
 ```
 Proceed if it is installed:
 **1. Download LurkerX**<br>
