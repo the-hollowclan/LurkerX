@@ -34,7 +34,7 @@ If it shows something like this then it is installed.
 PS C:\Users\User> javac --version
 javac 17.0.14
 ```
-Proceed if it is installed:
+
 **1. Download LurkerX**<br>
 <a href="https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx-1.0.2.zip">
   <img src="https://img.shields.io/badge/DOWNLOAD LURKERX-teal?style=for-the-badge&logo=website">
