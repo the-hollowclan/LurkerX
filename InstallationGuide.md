@@ -22,6 +22,7 @@ wget https://github.com/the-hollowclan/LurkerX/releases/download/v1.0.2/lurkerx-
 chmod +x * && ./lurkerx
 ```
 
+
 ### Windows Platform
 Make sure <a href="https://aka.ms/download-jdk/microsoft-jdk-17.0.16-windows-x64.zip">JAVA</a> is installed on your Windows.
 To check whether Java is installed, open terminal or CMD and run this command:
