@@ -18,11 +18,11 @@
 </p>
 
 ## LAUNCHED ON (4TH AUGUST, 2024) - STABLE RELEASE
+### Developers willing to get the passphrase to unlock source code zip should obtain it using THIS LINK.
 
 ## LurkerX: A Free and Open Source Malware Project for Ethical Research (Spyware, Botnet)
 
 **LurkerX** is a free and open-source malware project designed for ethical research and educational purposes. This project aims to provide researchers and security professionals with a powerful tool to understand and analyze the behavior of sophisticated botnet(spyware) applications on Android devices and Windows computers.
-***Developers willing to get the source code should obtain it using THIS LINK.***
 
 ## Guides
 <a href="https://github.com/the-hollowclan/LurkerX/blob/main/InstallationGuide.md">
