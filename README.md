@@ -63,7 +63,6 @@ LurkerX can be used for various ethical research purposes, such as:
 **Community and Collaboration:**
 
 LurkerX is an open-source project, encouraging collaboration and contributions from the security research community. Developers are welcome to contribute code, report bugs, and share their findings.
-Passphrase for codebase zip is: <b>https://blacksamaritan.blogspot.com</b>
 
 **Disclaimer:**
 
