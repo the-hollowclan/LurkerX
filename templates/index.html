@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Logs Archive{% endblock %}
+
+{% block content %}
+<h1>📂 Logs Archive</h1>
+<ul>
+  {% for device, years in structure.items() %}
+  <li>
+    <details>
+      <summary>📱 {{ device }}</summary>
+      <ul class="nested">
+        {% for year, months in years.items() %}
+        <li>
+          <details>
+            <summary>{{ year }}</summary>
+            <ul>
+              {% for month, days in months.items() %}
+              <li>
+                <details>
+                  <summary>{{ month }}</summary>
+                  <ul>
+                    {% for day, files in days.items() %}
+                    <li>
+                      <details>
+                        <summary>{{ day }}</summary>
+                        <ul>
+                          {% for file in files %}
+                          <li>
+                            <a class="link"
+                              onclick="openModal('{{ url_for('logs', filename=device ~ '/' ~ year ~ '/' ~ month ~ '/' ~ day ~ '/' ~ file) }}', '{{ file }}')">
+                              View {{ file.replace('.json', '') }}</a>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      </details>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </details>
+              </li>
+              {% endfor %}
+            </ul>
+          </details>
+        </li>
+        {% endfor %}
+      </ul>
+    </details>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

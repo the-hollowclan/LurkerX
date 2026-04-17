@@ -17,16 +17,27 @@
   <img src="https://img.shields.io/badge/Written%20In-Python,%20Dart-darkcyan?style=flat-square">
 </p>
 
-### Developers willing to get the passphrase to unlock source code zip should obtain it using THIS LINK.
+ _                _           __   __
+| |              | |          \ \ / /
+| |    _   _ _ __| | _____ _ __\ V / 
+| |   | | | | '__| |/ / _ \ '__/   \ 
+| |___| |_| | |  |   <  __/ | / /^\ \
+\_____/\__,_|_|  |_|\_\___|_| \/   \/  v1.4.0
+                                     
+YOUR ACTIONS MUST FOLLOW CODE OF CONDUCT IN THIS URL:
+https://github.com/the-hollowclan/LurkerX/code/of/conduct
+
+### As of April 2026, LurkerX is Open Source, free to access codebase, research, develop upon and collaborate
 
 ### What led to the development of this project?
   1. Curiosity and the act of challenging computer security.
-  2. For efficient and sandboxed usage. (CTFs, research and forensics, etc.)
+  2. For efficient and sandboxed usage (CTFs, research and forensics, etc.)
   3. Make it open-source for programmers to share and expand their knowledge
 
+### To contribute, read this page rather: <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>
 ## Guides
-<a href="https://blacksamaritan.blogspot.com/2025/09/100-free-mobile-spyware-tool-2025.html">
-  <img src="https://img.shields.io/badge/HOW TO INSTALL-teal?style=for-the-badge&logo=website">
+<a href="https://blacksamaritan.blogspot.com/2025/12/a-newly-emerged-mobile-spying-tool.html">
+  <img src="https://img.shields.io/badge/HOW TO INSTALL AND USE-teal?style=for-the-badge&logo=website">
 </a>
 <a href="https://github.com/the-hollowclan/LurkerX/blob/main/UsageGuide.md">
   <img src="https://img.shields.io/badge/HOW TO USE-teal?style=for-the-badge&logo=website">

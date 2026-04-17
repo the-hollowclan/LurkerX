@@ -1,0 +1,114 @@
+# Binaries and executables
+*.apk
+*.jar
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/engine
+bin/
+apktool.bat
+
+# Linux related binaries
+server
+apktool
+generate
+
+build-tools/
+build-tools.zip
+
+# Databases and Journals
+*.db
+*.db-shm
+*.db-wal
+*.wal
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+.installed.cfg
+*.egg
+build/
+dist/
+
+# Testing and Coverage
+.pytest_cache/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+
+# Documentation generator temp files
+Docs_Check.md
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+# FLUTTER LEGACY CODE
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+flutter_codebase/.DS_Store
+flutter_codebase/.atom/
+flutter_codebase/.build/
+flutter_codebase/.buildlog/
+flutter_codebase/.history
+flutter_codebase/.svn/
+flutter_codebase/.swiftpm/
+flutter_codebase/migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/#
+
+flutter_codebase/android/.gradle/
+flutter_codebase/android/.kotlin/
+flutter_codebase/android/gradle/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+flutter_codebase/android/.dart_tool/
+flutter_codebase/android/.flutter-plugins
+flutter_codebase/android/.flutter-plugins-dependencies
+flutter_codebase/android/.pub-cache/
+flutter_codebase/android/.pub/
+flutter_codebase/android/build/
+
+# Symbolication related
+flutter_codebase/android/app.*.symbols
+
+# Obfuscation related
+flutter_codebase/android/app.*.map.json
+
+# Android Studio will place build artifacts here
+flutter_codebase/android/app/src/debug
+flutter_codebase/android/app/src/profile
+flutter_codebase/android/app/src/release
