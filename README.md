@@ -25,8 +25,10 @@ https://github.com/the-hollowclan/LurkerX/code/of/conduct
 
 ### As of April 2026, LurkerX is Open Source, free to access codebase, research, develop upon and collaborate
 
+#### Codebase is accessible on this separate repo: [`the-hollowclan/lurkerx-apk`](https://github.com/the-hollowclan/lurkerx-apk)
+
 ### What led to the development of this project?
-  1. Curiosity and the act of challenging computer security.
+  1. Curiosity and the act of uncovering overlooked features that subtly opens endless possibilities againt device security.
   2. For efficient and sandboxed usage (CTFs, research and forensics, etc.)
   3. Make it open-source for programmers to share and expand their knowledge
 
@@ -47,15 +49,15 @@ It is crucial to emphasize that LurkerX is intended for ethical and educational 
 
 * **Location Tracking:** LurkerX can track the precise geolocation of the target device, providing detailed information about the user's movements.
 * **SMS and Call Log Monitoring:** LurkerX can intercept and record all incoming and outgoing SMS messages and call logs, providing insights into the user's communication patterns.
-* **Data Exfiltration:** LurkerX can exfiltrate sensitive data from the target device, including contacts, photos, and other personal information.
+* **Data Exfiltration:** LurkerX can exfiltrate sensitive data from the target device, including contacts, `photos(N/A)`, and other personal information.
 * **Stealthy Operation:** LurkerX is designed to operate stealthily, evading detection by antivirus and security software.
-* **Backdoor:** LurkerX allows advanced users to create custom commands in Shell Script for additional functionality and data collection.
+* **`Backdoor(N/A)`:** LurkerX allows advanced users to create custom commands in Shell Script for additional functionality and data collection.
     <p align="center">
-      <a href="https://nemesisguy.onrender.com/blog/how_to_hack_anyone_using_spyware.html">
+      <a href="https://blacksamaritan.blogspot.com/2025/12/a-newly-emerged-mobile-spying-tool.html">
         <img src="https://img.shields.io/badge/Tutorial_Page-teal?style=for-the-badge&logo=website">
         <img src="https://img.shields.io/badge/YouTube_Video_Link-red?style=for-the-badge&logo=youtube">
       </a>
-      <a href="https://nemesisguy.onrender.com/blog/how_to_hack_anyone_using_spyware.html">
+      <a href="https://blacksamaritan.blogspot.com/2025/12/a-newly-emerged-mobile-spying-tool.html">
         <img src="https://img.shields.io/badge/TikTok_Video_Link-grey?style=for-the-badge&logo=tiktok">
       </a>
     </p>
@@ -64,13 +66,13 @@ It is crucial to emphasize that LurkerX is intended for ethical and educational 
 
 LurkerX can be used for various ethical research purposes, such as:
 
-* **Understanding Spyware Behavior:** Researchers can use LurkerX to analyze the behavior of spyware applications and develop countermeasures.
-* **Security Training and Awareness:** Security professionals can use LurkerX to simulate real-world spyware attacks and educate users about the dangers of such threats.
-* **Malware Analysis and Detection:** Researchers can use LurkerX to develop and test malware detection and analysis tools.
+* **Understanding Spyware Behavior:** Researchers can use LurkerX to analyze the behavior of spyware applications and develop countermeasures
+* **Security Training and Awareness:** Security professionals can use LurkerX to simulate real-world spyware attacks and educate users about the dangers of such threats
+* **Malware Analysis and Detection:** Researchers can use LurkerX to develop and test malware detection and analysis tools
 
 **Community and Collaboration:**
 
-LurkerX is an open-source project, encouraging collaboration and contributions from the security research community. Developers are welcome to contribute code, report bugs, and share their findings.
+LurkerX is an open-source project, encouraging collaboration and contributions from the security research community. Developers are welcome to contribute code, report bugs, and share their findings
 
 **Disclaimer:**
 
