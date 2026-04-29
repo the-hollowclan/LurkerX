@@ -1,0 +1,96 @@
+.page {
+    padding: 20px 16px 28px;
+    display: grid;
+    gap: 18px;
+}
+
+/* page title */
+.page-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+.card {
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 16px;
+}
+.progress-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.progress-ring {
+    --size: 88px;
+    --thickness: 8px;
+    --value: 72; /* percent */
+
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            var(--accent) calc(var(--value) * 1%),
+            rgba(0,0,0,0.08) 0
+        );
+    display: grid;
+    place-items: center;
+}
+
+.progress-ring::before {
+    content: "";
+    width: calc(100% - var(--thickness) * 2);
+    height: calc(100% - var(--thickness) * 2);
+    background: var(--surface);
+    border-radius: 50%;
+}
+
+.progress-text {
+    position: absolute;
+    font-size: 14px;
+    font-weight: 600;
+}
+.progress-info {
+    flex: 1;
+}
+
+.progress-info h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.progress-info p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+.actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.action-btn {
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-pressed)
+    );
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.action-btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}

@@ -1,0 +1,10 @@
+{
+  "name": "LurkerX",
+  "author": "The Hollow Clan",
+  "collaborator": "Alphabetikal, tycoon-guy",
+  "version": "1.3.0",
+  "templates": ["Spyware", "Botnet (N/A)"],
+  "redirects": [
+    "https://github.com/the-hollowclan"
+  ]
+}
