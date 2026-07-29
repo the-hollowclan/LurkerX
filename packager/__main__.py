@@ -16,8 +16,6 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    clear_screen()
-
     base_dir = Path(__file__).parent.parent.resolve()
     ini = load_ini(base_dir / "choices.ini")
 
@@ -49,9 +47,15 @@ if __name__ == "__main__":
         print(f"{Fore.YELLOW}Update the [sign] keystore= path in choices.ini{Fore.RESET}")
         sys.exit(1)
 
-    print(get_colored_figlet(base_dir / "doom.txt"))
-    type_text(f"Author: {manifest.get('author', 'Unknown')}\n", Fore.YELLOW)
-    type_text(f"Version: {manifest.get('version', '1.0.0')}\n", Fore.CYAN)
+    if sys.stdout.isatty():
+        clear_screen()
+        print(get_colored_figlet(base_dir / "doom.txt"))
+        type_text(f"Author: {manifest.get('author', 'Unknown')}\n", Fore.YELLOW)
+        type_text(f"Version: {manifest.get('version', '1.0.0')}\n", Fore.CYAN)
+    else:
+        print(get_colored_figlet(base_dir / "doom.txt"))
+        print(f"Author: {manifest.get('author', 'Unknown')}")
+        print(f"Version: {manifest.get('version', '1.0.0')}")
 
     try:
         apk = modify_apk(
@@ -64,8 +68,15 @@ if __name__ == "__main__":
             keystore_alias=keystore_alias,
             base_dir=base_dir,
         )
-        type_text(f"\nSigned APK ready: {apk}\n", Fore.GREEN)
-    except EOFError:
-        pass
+        if sys.stdout.isatty():
+            type_text(f"\nSigned APK ready: {apk}\n", Fore.GREEN)
+        else:
+            print(f"\nSigned APK ready: {apk}")
+    except SystemExit:
+        raise
     except Exception as e:
-        type_text(f"\n[ERROR] {e}\n", Fore.RED)
+        if sys.stdout.isatty():
+            type_text(f"\n[ERROR] {e}\n", Fore.RED)
+        else:
+            print(f"\n[ERROR] {e}")
+        sys.exit(1)
