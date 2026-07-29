@@ -10,6 +10,8 @@
 bin/
 apktool.bat
 
+build-tools/
+
 # Linux related binaries
 server
 apktool

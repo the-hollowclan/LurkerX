@@ -9,16 +9,15 @@
 body {
   margin: 0;
   font-family: "Consolas", "Fira Code", "Segoe UI", monospace;
-  background: #0f172a; /* dark slate */
-  color: #d1d5db; /* soft gray */
+  background: #0f172a;
+  color: #d1d5db;
   display: flex;
   height: 100vh;
 }
 
-/* Sidebar */
 .sidebar {
   min-width: 200px;
-  background: #111827; /* near-black */
+  background: #111827;
   color: #f9fafb;
   overflow-y: auto;
   padding: 20px;
@@ -29,7 +28,7 @@ body {
 .sidebar h2 {
   font-size: 1.2rem;
   margin-bottom: 15px;
-  color: #10b981; /* neon green accent */
+  color: #10b981;
 }
 .sidebar summary {
   cursor: pointer;
@@ -38,12 +37,12 @@ body {
   transition: background 0.2s;
 }
 .sidebar summary:hover {
-  background: rgba(16, 185, 129, 0.2); /* green tint */
+  background: rgba(16, 185, 129, 0.2);
 }
 .sidebar a {
   display: block;
   padding: 5px 10px;
-  color: #38bdf8; /* cyan accent */
+  color: #38bdf8;
   text-decoration: none;
   border-radius: 4px;
   transition: background 0.2s;
@@ -52,7 +51,6 @@ body {
   background: rgba(56, 189, 248, 0.15);
 }
 
-/* Main content */
 .main {
   flex: 1;
   padding: 20px;
@@ -61,10 +59,9 @@ body {
 .main h1 {
   margin-top: 0;
   font-size: 1.5rem;
-  color: #facc15; /* yellow headline */
+  color: #facc15;
 }
 
-/* Board container */
 .board-content {
   background: #1e293b;
   padding: 20px;
@@ -88,11 +85,10 @@ body {
   border: none;
   border-radius: 6px;
   background: #2563eb;
-  color: #000;
+  color: #fff;
   cursor: pointer;
   font-size: 0.9rem;
   transition: background 0.2s;
-  color: #fff;
 }
 .filter-buttons button:hover {
   background: #1e40af;
@@ -106,26 +102,39 @@ body {
 .gm-btn { background: #d93025 !important; }
 .gm-btn:hover { background: #a52714 !important; }
 
-/* Modal */
 .modal-content {
   background: #1f2937;
   color: #e5e7eb;
   border: 1px solid #374151;
 }
 
-/* Spinner */
 .spinner {
   border: 4px solid #1f2937;
-  border-top: 4px solid #10b981; /* neon hacker green */
+  border-top: 4px solid #10b981;
 }
 
-/* Links / triggers */
 .view-trigger {
   cursor: pointer;
   color: #22d3ee;
 }
 .view-trigger:hover {
   color: #06b6d4;
+}
+
+.apk-download {
+  margin-top: 12px;
+  padding: 10px;
+  background: #10b981;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.apk-download:hover {
+  background: #059669;
 }
   </style>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -181,11 +190,22 @@ body {
       </li>
       {% endfor %}
     </ul>
-
+    {% if not unauthorized %}
+    <a class="apk-download" href="/download_apk">Download APK</a>
+    {% endif %}
     {% endblock %}
   </div>
 
   <div class="main">
+    {% if unauthorized %}
+    <div id="login-box" style="max-width: 400px; margin: 40px auto; padding: 24px; background: #1e293b; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.6);">
+      <h1 style="margin-top: 0; font-size: 1.5rem; color: #facc15;">🔐 LurkerX Panel</h1>
+      <p style="color: #9ca3af;">Enter your token to access the panel.</p>
+      <input id="token-input" type="text" placeholder="Encrypted token" style="width: 100%; padding: 10px; margin: 12px 0; border-radius: 6px; border: 1px solid #374151; background: #0f172a; color: #e5e7eb; font-family: monospace;" />
+      <button id="login-btn" style="width: 100%; padding: 10px; border: none; border-radius: 6px; background: #10b981; color: #000; cursor: pointer; font-weight: bold;">Unlock Panel</button>
+      <p id="login-error" style="color: #ef4444; margin-top: 10px; display: none;"></p>
+    </div>
+    {% else %}
     {% block content %}{% endblock %}
 
     <h2>Popular apps</h2>
@@ -200,13 +220,39 @@ body {
     <hr>
 
     <div id="board-content" class="board-content">
-      <p>👈 Select a log from the sidebar to view its details here.</p>
+      <p>Select a log from the sidebar to view its details here.</p>
     </div>
+    {% endif %}
   </div>
 
   <div class="spinner-container">
     <div class="spinner" id="spinner"></div>
   </div>
+  {% if unauthorized %}
+  <script>
+    document.getElementById("login-btn").addEventListener("click", function () {
+      const token = document.getElementById("token-input").value.trim();
+      const errorEl = document.getElementById("login-error");
+      errorEl.style.display = "none";
+      fetch("/validate_token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token }),
+      })
+      .then((res) => {
+        if (res.ok) {
+          window.location.reload();
+        } else {
+          return res.json().then((data) => { throw new Error(data.error || "Invalid token"); });
+        }
+      })
+      .catch((err) => {
+        errorEl.textContent = err.message;
+        errorEl.style.display = "block";
+      });
+    });
+  </script>
+  {% endif %}
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
