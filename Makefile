@@ -5,34 +5,28 @@ IMAGE := lurkerx
 help:
 	@echo "Usage:"
 	@echo "  make build      - Build image"
-	@echo "  make up         - Start containers"
-	@echo "  make down       - Stop containers"
+	@echo "  make up         - Start container"
+	@echo "  make down       - Stop container"
 	@echo "  make logs       - Tail logs"
-	@echo "  make apk        - Build APK (optional: ARGS=...)"
-	@echo "  make clean      - Remove containers + image"
+	@echo "  make apk        - Rebuild APK inside image"
+	@echo "  make clean      - Remove container + image"
 
 build:
 	docker build -t $(IMAGE) .
 
 up:
-	docker run -d --name lurkerx-server --restart unless-stopped -p 5000:5000 \
-		-v "$$(pwd)/result:/app/result" \
-		-e PYTHONUNBUFFERED=1 $(IMAGE) python -m server
-	docker run -d --name lurkerx-packager --restart unless-stopped \
-		-v "$$(pwd)/result:/app/result" \
-		-e PYTHONUNBUFFERED=1 -e BREAK_SYSTEM_PACKAGES=true $(IMAGE)
+	docker rm -f lurkerx 2>/dev/null || true
+	docker run -d --name lurkerx --restart unless-stopped -p 5000:5000 $(IMAGE)
 
 down:
-	-docker rm -f lurkerx-server lurkerx-packager
+	-docker rm -f lurkerx
 
 logs:
-	docker logs -f lurkerx-server lurkerx-packager
+	docker logs -f lurkerx
 
 apk: build
-	docker run --rm \
-		-e PYTHONUNBUFFERED=1 -e BREAK_SYSTEM_PACKAGES=true \
-		$(IMAGE) $(ARGS)
+	docker run --rm $(IMAGE) python -m packager
 
 clean:
-	-docker rm -f lurkerx-server lurkerx-packager
+	-docker rm -f lurkerx
 	-docker rmi $(IMAGE)
