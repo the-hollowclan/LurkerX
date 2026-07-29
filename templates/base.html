@@ -121,10 +121,32 @@ body {
   color: #06b6d4;
 }
 
-.apk-download {
-  margin-top: 12px;
+.apk-build {
+  margin-top: 8px;
   padding: 10px;
-  background: #10b981;
+  background: #1e40af;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  font-size: 0.95rem;
+}
+.apk-build:hover:not(:disabled) {
+  background: #2563eb;
+}
+.apk-build:disabled {
+  background: #374151;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.apk-download {
+  margin-top: 8px;
+  padding: 10px;
+  background: #059669;
   color: #000;
   text-align: center;
   border-radius: 6px;
@@ -134,7 +156,7 @@ body {
   display: block;
 }
 .apk-download:hover {
-  background: #059669;
+  background: #10b981;
 }
   </style>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -191,7 +213,9 @@ body {
       {% endfor %}
     </ul>
     {% if not unauthorized %}
-    <a class="apk-download" href="/download_apk">Download APK</a>
+    <button id="build-apk-btn" class="apk-build">Build APK</button>
+    <a id="download-apk-link" class="apk-download" href="/download_apk">Download APK</a>
+    <p id="build-status" style="color: #9ca3af; font-size: 0.85rem; margin-top: 8px;"></p>
     {% endif %}
     {% endblock %}
   </div>

@@ -207,3 +207,74 @@ function filterNotifications(packageName) {
   refreshInterval = setInterval(fetchAndRender, 30000);
 }
 
+function updateBuildStatus() {
+  const buildBtn = document.getElementById("build-apk-btn");
+  const downloadLink = document.getElementById("download-apk-link");
+  const statusEl = document.getElementById("build-status");
+  if (!buildBtn || !downloadLink || !statusEl) return;
+
+  fetch("/build_status")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.status === "building") {
+        buildBtn.disabled = true;
+        buildBtn.textContent = "Building...";
+        downloadLink.style.pointerEvents = "none";
+        downloadLink.style.opacity = "0.5";
+        statusEl.textContent = "Building APK, please wait...";
+        statusEl.style.color = "#facc15";
+      } else if (data.status === "error") {
+        buildBtn.disabled = false;
+        buildBtn.textContent = "Build APK";
+        downloadLink.style.pointerEvents = "auto";
+        downloadLink.style.opacity = "1";
+        statusEl.textContent = "Build failed: " + (data.error || "unknown error");
+        statusEl.style.color = "#ef4444";
+      } else if (data.apk_exists) {
+        buildBtn.disabled = false;
+        buildBtn.textContent = "Build APK";
+        downloadLink.style.pointerEvents = "auto";
+        downloadLink.style.opacity = "1";
+        statusEl.textContent = "APK ready for download.";
+        statusEl.style.color = "#10b981";
+      } else {
+        buildBtn.disabled = false;
+        buildBtn.textContent = "Build APK";
+        downloadLink.style.pointerEvents = "none";
+        downloadLink.style.opacity = "0.5";
+        statusEl.textContent = "APK not built yet.";
+        statusEl.style.color = "#9ca3af";
+      }
+    })
+    .catch(() => {
+      buildBtn.disabled = false;
+      buildBtn.textContent = "Build APK";
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const buildBtn = document.getElementById("build-apk-btn");
+  if (buildBtn) {
+    buildBtn.addEventListener("click", function () {
+      buildBtn.disabled = true;
+      buildBtn.textContent = "Starting build...";
+      fetch("/build_apk", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "building") {
+            buildBtn.textContent = "Building...";
+          } else {
+            buildBtn.disabled = false;
+            buildBtn.textContent = "Build APK";
+          }
+        })
+        .catch(() => {
+          buildBtn.disabled = false;
+          buildBtn.textContent = "Build APK";
+        });
+    });
+    updateBuildStatus();
+    setInterval(updateBuildStatus, 2000);
+  }
+});
+
