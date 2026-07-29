@@ -52,15 +52,5 @@ if [ ! -d "$ASSETS_DIR/build-tools/35.0.1" ]; then
     rm -rf "$tmpdir"
 fi
 
-if [ ! -f "$ASSETS_DIR/result/final_signed.apk" ] || [ ! -s "$ASSETS_DIR/result/final_signed.apk" ]; then
-    echo "[+] Building APK..."
-    if ! python -m packager; then
-        echo "[ERROR] APK build failed"
-        exit 1
-    fi
-else
-    echo "[=] APK already built, skipping."
-fi
-
 echo "[+] Starting server..."
 exec python -m server "$@"
