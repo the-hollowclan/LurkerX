@@ -53,4 +53,4 @@ if [ ! -d "$ASSETS_DIR/build-tools/35.0.1" ]; then
 fi
 
 echo "[+] Starting server..."
-exec python -m server "$@"
+exec python -m server # "$@"
