@@ -89,6 +89,11 @@ def modify_apk(
     shutil.copytree(src_assets, apk_assets)
     print(f"{Fore.GREEN}[+]{Fore.RESET} Assets replaced from {src_assets}")
 
+    url_file = apk_assets / "url.txt"
+    if url_file.exists():
+        url_file.write_text(server_url, encoding="utf-8")
+        print(f"{Fore.GREEN}[+]{Fore.RESET} Injected server URL: {server_url}")
+
     run([apktool, "b", work_dir, "-o", output_apk])
 
     aligned = output_apk.with_name("final_aligned.apk")

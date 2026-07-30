@@ -100,6 +100,7 @@ def query_data(conn: sqlite3.Connection, info_type: str, min_ts: int | None) -> 
         return []
 
     try:
+        conn.row_factory = sqlite3.Row
         if min_ts is not None:
             cur.execute(f"SELECT * FROM {info_type} WHERE {ts_field} >= ? ORDER BY {ts_field} DESC", (min_ts,))
         else:
