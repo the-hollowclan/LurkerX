@@ -52,5 +52,11 @@ if [ ! -d "$ASSETS_DIR/build-tools/35.0.1" ]; then
     rm -rf "$tmpdir"
 fi
 
+#echo "[+] Starting server..."
+#exec python -m server # "$@"
+
 echo "[+] Starting server..."
-exec python -m server "$@"
+ls -la /app
+ls -la /app/server || echo "No server folder found"
+exec python -m server
+
