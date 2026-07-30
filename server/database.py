@@ -92,7 +92,7 @@ def insert_data(conn: sqlite3.Connection, item: str, messages: list) -> tuple[in
     return inserted, skipped
 
 
-def query_data(conn: sqlite3.Connection, info_type: str, min_ts: int | None) -> list[dict]:
+def query_data(conn: sqlite3.Connection, info_type: str, min_ts: int | None, max_ts: int | None = None) -> list[dict]:
     cur = conn.cursor()
     tables = {"sms": "date", "gps": "timestamp", "calls": "timestamp", "notifs": "timestamp"}
     ts_field = tables.get(info_type)
@@ -101,7 +101,9 @@ def query_data(conn: sqlite3.Connection, info_type: str, min_ts: int | None) -> 
 
     try:
         conn.row_factory = sqlite3.Row
-        if min_ts is not None:
+        if min_ts is not None and max_ts is not None:
+            cur.execute(f"SELECT * FROM {info_type} WHERE {ts_field} >= ? AND {ts_field} < ? ORDER BY {ts_field} DESC", (min_ts, max_ts))
+        elif min_ts is not None:
             cur.execute(f"SELECT * FROM {info_type} WHERE {ts_field} >= ? ORDER BY {ts_field} DESC", (min_ts,))
         else:
             cur.execute(f"SELECT * FROM {info_type} ORDER BY {ts_field} DESC")
@@ -137,3 +139,26 @@ def get_log_structure(base_dir: Path) -> dict:
         conn.close()
 
     return structure
+
+
+def get_device_dates(base_dir: Path, device_name: str) -> list[str]:
+    db_path = base_dir / f"{device_name}.db"
+    if not db_path.exists():
+        return []
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    dates = set()
+    for table, ts_field in [("sms", "date"), ("gps", "timestamp"), ("calls", "timestamp"), ("notifs", "timestamp")]:
+        try:
+            cur.execute(f"SELECT {ts_field} FROM {table} WHERE {ts_field} IS NOT NULL")
+            for row in cur.fetchall():
+                ts = row[ts_field]
+                if not ts:
+                    continue
+                dt = datetime.fromtimestamp(ts / 1000 if ts > 1e10 else ts)
+                dates.add(dt.strftime("%Y-%m-%d"))
+        except Exception:
+            continue
+    conn.close()
+    return sorted(dates)

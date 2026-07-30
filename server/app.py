@@ -6,7 +6,7 @@ import subprocess
 import threading
 from datetime import datetime, timezone
 
-from server.database import safe_device_name, get_device_db, insert_data, query_data, get_log_structure
+from server.database import safe_device_name, get_device_db, insert_data, query_data, get_log_structure, get_device_dates
 from validation import validate_token as validate_token_util, decrypt_token, decode_token
 
 
@@ -138,10 +138,11 @@ def create_app(base_dir: Path) -> Flask:
             return jsonify({"error": "Missing device header"}), 400
 
         min_ts = request.args.get("min_timestamp", type=int)
+        max_ts = request.args.get("max_timestamp", type=int)
         device_name = safe_device_name(device_model)
         try:
             conn = get_device_db(device_name, base_dir)
-            data = query_data(conn, info_type, min_ts)
+            data = query_data(conn, info_type, min_ts, max_ts)
             conn.close()
         except Exception as e:
             return jsonify({"error": f"Database error: {e}"}), 500
@@ -215,6 +216,24 @@ def create_app(base_dir: Path) -> Flask:
         except Exception as e:
             return jsonify({"error": f"Database error: {e}"}), 500
         return jsonify({info_type: rows})
+
+    @app.route("/api/devices", methods=["GET"])
+    def api_devices():
+        try:
+            structure = get_log_structure(base_dir)
+            devices = list(structure.keys())
+            return jsonify({"devices": devices})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/api/devices/<device>/dates", methods=["GET"])
+    def api_device_dates(device):
+        device_name = safe_device_name(device)
+        try:
+            dates = get_device_dates(base_dir, device_name)
+            return jsonify({"device": device_name, "dates": dates})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
     @app.route("/download_apk", methods=["GET"])
     def download_apk():
