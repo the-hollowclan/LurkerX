@@ -1,0 +1,110 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'App name'
+        required: false
+        default: 'NetFree'
+      url:
+        description: 'Server URL'
+        required: false
+        default: 'https://example.tunnel.com'
+      version:
+        description: 'Release version to download assets from'
+        required: false
+        default: 'v1.5.0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends curl wget unzip
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Download apktool
+        run: |
+          set -eux
+          for url in \
+            "https://github.com/iBotPeaches/Apktool/releases/download/v2.9.3/apktool_2.9.3.jar" \
+            "https://mirror.ghproxy.com/https://github.com/iBotPeaches/Apktool/releases/download/v2.9.3/apktool_2.9.3.jar"; do
+            (curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 15 "$url" -o /tmp/apktool.jar \
+             || wget -q --tries=3 --timeout=15 "$url" -O /tmp/apktool.jar) && break
+          done
+          test -s /tmp/apktool.jar
+          printf '#!/bin/sh\nexec java -jar /tmp/apktool.jar "$@"\n' > /tmp/apktool
+          chmod +x /tmp/apktool
+          echo "/tmp/apktool" >> $GITHUB_PATH
+
+      - name: Download release assets
+        run: |
+          set -eux
+          REPO="${{ github.repository }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          BASE_URL="https://github.com/${REPO}/releases/download/${VERSION}"
+          mkdir -p build-tools result
+          for url in \
+            "${BASE_URL}/build-tools.zip" \
+            "https://mirror.ghproxy.com/${BASE_URL}/build-tools.zip"; do
+            (curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 15 "$url" -o /tmp/build-tools.zip \
+             || wget -q --tries=3 --timeout=15 "$url" -O /tmp/build-tools.zip) && break
+          done
+          test -s /tmp/build-tools.zip
+          unzip -q /tmp/build-tools.zip -d /tmp/build-tools-extracted
+          cp -r /tmp/build-tools-extracted/build-tools/* build-tools/
+          chmod +x build-tools/35.0.1/*
+          rm -rf /tmp/build-tools.zip /tmp/build-tools-extracted
+          for url in \
+            "${BASE_URL}/base.apk" \
+            "https://mirror.ghproxy.com/${BASE_URL}/base.apk"; do
+            (curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 15 "$url" -o base.apk \
+             || wget -q --tries=3 --timeout=15 "$url" -O base.apk) && break
+          done
+          test -s base.apk
+
+      - name: Build APK
+        run: |
+          python -m packager \
+            ${{ github.event.inputs.name != '' && format('--name {0}', github.event.inputs.name) || '' }} \
+            ${{ github.event.inputs.url != '' && format('--url {0}', github.event.inputs.url) || '' }}
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lurkerx-apk
+          path: result/final_signed.apk
+          retention-days: 30

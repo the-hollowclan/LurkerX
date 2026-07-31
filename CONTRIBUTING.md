@@ -45,7 +45,7 @@ You can contribute in several ways:
 
 Please follow these basic guidelines:
 
-* Write clean, readable code
+* Write performant code and commented
 * Keep functions small and focused
 * Use meaningful variable and function names
 * Avoid unnecessary complexity

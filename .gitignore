@@ -13,7 +13,7 @@ apktool.bat
 build-tools/
 
 # Linux related binaries
-server
+#server/
 apktool
 generate
 
