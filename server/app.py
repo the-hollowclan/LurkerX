@@ -6,7 +6,7 @@ import subprocess
 import threading
 from datetime import datetime, timezone
 
-from server.database import safe_device_name, get_device_db, insert_data, query_data, get_log_structure, get_device_dates
+from server.database import safe_device_name, get_device_db, insert_data, query_data, get_log_structure, get_device_dates, query_data_by_date
 from validation import validate_token as validate_token_util, decrypt_token, decode_token
 
 
@@ -137,16 +137,17 @@ def create_app(base_dir: Path) -> Flask:
         if not device_model:
             return jsonify({"error": "Missing device header"}), 400
 
-        min_ts = request.args.get("min_timestamp", type=int)
-        max_ts = request.args.get("max_timestamp", type=int)
+        date = request.args.get("date")
         device_name = safe_device_name(device_model)
         try:
             conn = get_device_db(device_name, base_dir)
-            data = query_data(conn, info_type, min_ts, max_ts)
+            data = query_data_by_date(conn, info_type, date)
             conn.close()
         except Exception as e:
+            print(f"[ERROR] get_info failed: device={device_name} type={info_type} date={date} error={e}")
             return jsonify({"error": f"Database error: {e}"}), 500
 
+        print(f"[DEBUG] get_info: device={device_name} type={info_type} date={date} count={len(data)}")
         return jsonify({"device": device_name, "type": info_type, "count": len(data), "data": data})
 
     @app.route("/build_status")

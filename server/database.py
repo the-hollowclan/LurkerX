@@ -93,7 +93,6 @@ def insert_data(conn: sqlite3.Connection, item: str, messages: list) -> tuple[in
 
 
 def query_data(conn: sqlite3.Connection, info_type: str, min_ts: int | None, max_ts: int | None = None) -> list[dict]:
-    cur = conn.cursor()
     tables = {"sms": "date", "gps": "timestamp", "calls": "timestamp", "notifs": "timestamp"}
     ts_field = tables.get(info_type)
     if not ts_field:
@@ -101,6 +100,7 @@ def query_data(conn: sqlite3.Connection, info_type: str, min_ts: int | None, max
 
     try:
         conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
         if min_ts is not None and max_ts is not None:
             cur.execute(f"SELECT * FROM {info_type} WHERE {ts_field} >= ? AND {ts_field} < ? ORDER BY {ts_field} DESC", (min_ts, max_ts))
         elif min_ts is not None:
@@ -109,6 +109,24 @@ def query_data(conn: sqlite3.Connection, info_type: str, min_ts: int | None, max
             cur.execute(f"SELECT * FROM {info_type} ORDER BY {ts_field} DESC")
         return [dict(row) for row in cur.fetchall()]
     except Exception:
+        return []
+
+
+def query_data_by_date(conn: sqlite3.Connection, info_type: str, date_str: str | None) -> list[dict]:
+    if not date_str:
+        return query_data(conn, info_type, None)
+
+    try:
+        start_dt = datetime.strptime(date_str, "%Y-%m-%d")
+        end_dt = start_dt.replace(hour=23, minute=59, second=59, microsecond=999999)
+        start_ts = int(start_dt.timestamp() * 1000)
+        end_ts = int(end_dt.timestamp() * 1000)
+        print(f"[DEBUG] query_data_by_date: info_type={info_type} date={date_str} start_ts={start_ts} end_ts={end_ts}")
+        result = query_data(conn, info_type, start_ts, end_ts)
+        print(f"[DEBUG] query_data_by_date result count={len(result)}")
+        return result
+    except Exception as e:
+        print(f"[ERROR] query_data_by_date failed: {e}")
         return []
 
 
