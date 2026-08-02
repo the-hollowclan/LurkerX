@@ -4,8 +4,6 @@ Did you know that you can spy on any Android Phone using just your browser on yo
 
 LurkerX has been a tool people use to generate spywares for Android devices, but for your information it required a PC like a laptop because that was how it was designed. The recent breakthrough is very surprising, With any device that you are using, you can generate a spyware that can be used to spy on other Android devices. In this post, I would list and explain all that you need to know in spying other Androids using the new LurkerX, so miss no glance if you need to learn how to use the new LurkerX.
 
-
-
 1. The most neccessary thing to do is to create an account on these two platforms; 
 
 - [**GitHub**](https://github.com)
@@ -19,18 +17,30 @@ It is those platforms I'd use in this tutorial, though many platforms provides s
 
 3. Fork the repository, step-by-step illustration as shown in the images below:
 
+<img src="../imgs/1.PNG" width="300" height="400">
+
 4. Copy the link to your forked repository. For e.g, mine is https://github.com/nooby-jazy/LurkerX
 
 `https://github.com/noobie-jayz/LurkerX`
+
 5. Now log into your [render.com](https://render.com) account
 
 6. Create a new `web service`
 
+<img src="../imgs/2.PNG" width="300" height="300">
+
 7. Choose public git repository and enter the link to your GitHub fork. 
+
+<img src="../imgs/3.PNG" width="300" height="300">
 
 8. Connect and Choose `FREE` instance plan. Then jump to the bottom and click `Deploy web service`
 
+<img src="../imgs/4.PNG" width="300" height="300">
+<img src="../imgs/5.PNG" width="300" height="300">
+
 9. Render will generate a link for you. Copy the link
+
+<img src="../imgs/6.PNG" width="300" height="300">
 
 10. Go back to your GitHub account. Everything is set, you just need to make sure your generated Spyware would forward all data and information to your Render.com URL. 
 
@@ -39,8 +49,13 @@ It is those platforms I'd use in this tutorial, though many platforms provides s
 - `remoteUrl` should be your link from render.com
 - `publicRepoUrl` should be your forked repo's link. In this case mine is `https://github.com/nooby-jayz/LurkerX`.
 
+<img src="../imgs/9.PNG" width="300" height="400">
+<img src="../imgs/10.PNG" width="300" height="400">
+
 You edit this, you edit the spyware behavior.
 Don't forget to save it after editing(Also called "Committing" on GitHub)
+
+<img src="../imgs/12.PNG" width="300" height="400">
 
 This is an example of how I made mine:
 
@@ -80,15 +95,16 @@ alias =
 
 ```
 
-12. Now in your browser open your repo's page.
+12. Now open your GitHub Actions, for e.g, mine is 
 
-13. Wait for about 10 minutes and refresh. 
+`https://github.com/nooby-jayz/LurkerX/actions`
 
-14.  Go to releases. You should see `app.apk` built and 
+13. Choose the latest one, the first one on top. 
 
-13. After that open the link Render gave you in your browser:
+14. Wait for it to build the malware successfully then scroll to the bottom (Artifacts section)
 
-14. Build the APK. It might take a while for the spyware to get packaged, while it is loading, head straight to generate a new Token to unlock the Complete Portal. 
+14.  You should see the app built, click on it to download
 
-15. After APK is completely built, you can download and install it on the target device that you want to monitor. 
-16. All information on that device can also be viewed on your render.com URL portal. 
+13. After that install it on the target device you aim to monitor
+ 
+14. All information on that device can also be viewed on your render.com URL portal. 
