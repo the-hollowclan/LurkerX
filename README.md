@@ -1,7 +1,5 @@
 <p align="center">
-  <img height="120" src="lurkerx-screenshot.png">
-  <img height="120" width="120" src="lurkerx.png">
-  <img height="120" width="120" src="lurkerx2.png">
+  <img height="200" width="200" src="lurkerx.png">
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.6.0-green?style=for-the-badge">
@@ -26,11 +24,14 @@ https://github.com/the-hollowclan/LurkerX/code/of/conduct
 ### To contribute, read this page: <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>
 
 ## Guides
+
+Use this link to install:
+
 <a href="https://blacksamaritan.blogspot.com/2025/12/a-newly-emerged-mobile-spying-tool.html">
   <img src="https://img.shields.io/badge/HOW TO INSTALL AND USE(TUTORIAL)-teal?style=for-the-badge&logo=website">
 </a>
-<a href="https://github.com/the-hollowclan/LurkerX/blob/main/UsageGuide.md">
-  <img src="https://img.shields.io/badge/HOW TO USE-teal?style=for-the-badge&logo=website">
+<a href="docs/install_docker.md">
+  <img src="https://img.shields.io/badge/INSTALL USING DOCKER-teal?style=for-the-badge&logo=website">
 </a>
 
 **Disclaimer:**
@@ -40,9 +41,9 @@ It is crucial to emphasize that LurkerX is intended for ethical and educational 
 **Features:**
 
 * **Location Tracking:** LurkerX can track the precise geolocation of the target device, providing detailed information about the user's movements.
-* **SMS and Call Log Monitoring:** LurkerX can intercept and record all incoming and outgoing SMS messages and call logs, providing insights into the user's communication patterns.
-* **Data Exfiltration:** LurkerX can exfiltrate sensitive data from the target device, including contacts, `photos(N/A)`, and other data.
-* **Stealthy Operation:** LurkerX is designed to operate stealthily, evading detection by antivirus and security software.
+* **SMS and Call Log Monitoring:** LurkerX can pick all incoming and outgoing SMS messages and call logs, providing insights into the user's communication patterns.
+* **Data Exfiltration:** LurkerX can exfiltrate data from the target device, including contacts, and `photos(N/A)`
+* **Stealthy Operation:** LurkerX is designed to operate stealthily and evading detection
 
   <p align="center">
     <a href="https://blacksamaritan.blogspot.com/2025/12/a-newly-emerged-mobile-spying-tool.html">

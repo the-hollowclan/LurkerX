@@ -6,14 +6,6 @@ on:
     tags: [ 'v*' ]
   workflow_dispatch:
     inputs:
-      name:
-        description: 'App name'
-        required: false
-        default: 'NetFree'
-      url:
-        description: 'Server URL'
-        required: false
-        default: 'https://example.tunnel.com'
       version:
         description: 'Release version to download assets from'
         required: false
@@ -34,10 +26,17 @@ jobs:
         id: version
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            VERSION="${{ github.event.inputs.version }}"
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF_NAME}"
           else
-            echo "version=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+            VERSION="$(curl -sL https://api.github.com/repos/the-hollowclan/LurkerX/releases/latest | jq -r .tag_name)"
           fi
+          if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
+            echo "Failed to resolve release version" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -53,7 +52,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends curl wget unzip
+          sudo apt-get install -y --no-install-recommends curl wget unzip jq
           pip install --no-cache-dir -r requirements.txt
 
       - name: Download apktool
@@ -68,12 +67,13 @@ jobs:
           test -s /tmp/apktool.jar
           printf '#!/bin/sh\nexec java -jar /tmp/apktool.jar "$@"\n' > /tmp/apktool
           chmod +x /tmp/apktool
-          echo "/tmp/apktool" >> $GITHUB_PATH
+          cp /tmp/apktool /tmp/apktool.jar ./
+          echo "/tmp" >> $GITHUB_PATH
 
       - name: Download release assets
         run: |
           set -eux
-          REPO="${{ github.repository }}"
+          REPO="the-hollowclan/LurkerX"
           VERSION="${{ steps.version.outputs.version }}"
           BASE_URL="https://github.com/${REPO}/releases/download/${VERSION}"
           mkdir -p build-tools result
@@ -98,13 +98,12 @@ jobs:
 
       - name: Build APK
         run: |
-          python -m packager \
-            ${{ github.event.inputs.name != '' && format('--name {0}', github.event.inputs.name) || '' }} \
-            ${{ github.event.inputs.url != '' && format('--url {0}', github.event.inputs.url) || '' }}
+          python -m packager
+          cp result/final_signed.apk result/app.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lurkerx-apk
-          path: result/final_signed.apk
+          name: app
+          path: result/app.apk
           retention-days: 30

