@@ -6,14 +6,6 @@ on:
     tags: [ 'v*' ]
   workflow_dispatch:
     inputs:
-      name:
-        description: 'App name'
-        required: false
-        default: 'NetFree'
-      url:
-        description: 'Server URL'
-        required: false
-        default: 'https://example.tunnel.com'
       version:
         description: 'Release version to download assets from'
         required: false
@@ -73,7 +65,7 @@ jobs:
       - name: Download release assets
         run: |
           set -eux
-          REPO="${{ github.repository }}"
+          REPO="the-hollowclan/LurkerX"
           VERSION="${{ steps.version.outputs.version }}"
           BASE_URL="https://github.com/${REPO}/releases/download/${VERSION}"
           mkdir -p build-tools result
@@ -98,9 +90,7 @@ jobs:
 
       - name: Build APK
         run: |
-          python -m packager \
-            ${{ github.event.inputs.name != '' && format('--name {0}', github.event.inputs.name) || '' }} \
-            ${{ github.event.inputs.url != '' && format('--url {0}', github.event.inputs.url) || '' }}
+          python -m packager
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
@@ -108,3 +98,9 @@ jobs:
           name: lurkerx-apk
           path: result/final_signed.apk
           retention-days: 30
+
+      - name: Upload APK to release
+        if: github.repository != 'the-hollowclan/LurkerX'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: result/final_signed.apk
