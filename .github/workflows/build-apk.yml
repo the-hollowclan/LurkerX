@@ -99,16 +99,21 @@ jobs:
       - name: Build APK
         run: |
           python -m packager
+          cp result/final_signed.apk result/app.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lurkerx-apk
-          path: result/final_signed.apk
+          name: app
+          path: result/app.apk
           retention-days: 30
 
-      - name: Upload APK to release
-        if: github.repository != 'the-hollowclan/LurkerX'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: result/final_signed.apk
+      - name: Print download URL
+        run: |
+          ARTIFACT_ID=$(curl -sL \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/the-hollowclan/LurkerX/actions/runs/${{ github.run_id }}/artifacts" \
+            | jq -r '.artifacts[] | select(.name == "app") | .id')
+          if [ -n "$ARTIFACT_ID" ]; then
+            echo "Download APK: https://nightly.link/the-hollowclan/LurkerX/actions/artifacts/${ARTIFACT_ID}.zip"
+          fi
