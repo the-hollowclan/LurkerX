@@ -1,14 +1,21 @@
 # contacts, tiktok, 
-from flask import Flask, request, jsonify, render_template, send_file, session, make_response
+from flask import Flask, request, jsonify, render_template, send_file, session, make_response, redirect, url_for
 from pathlib import Path
 import os
+import io
+import shutil
 import traceback
 import subprocess
 import threading
+import re
+import zipfile
+import tempfile
+import requests
 from datetime import datetime, timezone
 
 from server.database import safe_device_name, get_device_db, insert_data, query_data, get_log_structure, get_device_dates, query_data_by_date
 from validation import validate_token as validate_token_util, decrypt_token, decode_token
+from packager.config import load_ini
 
 
 APK_PATH = Path(__file__).resolve().parent.parent / "result" / "final_signed.apk"
@@ -37,10 +44,10 @@ def _token_expiry_seconds(token_encrypted: str) -> int | None:
         return None
 
 
-def _set_build_status(status: str, error: str = ""):
+def _set_build_status(status: str, error: str = "", source: str = ""):
     try:
         BUILD_STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
-        BUILD_STATUS_PATH.write_text(f"{status}\n{error}", encoding="utf-8")
+        BUILD_STATUS_PATH.write_text(f"{status}\n{error}\n{source}", encoding="utf-8")
     except Exception:
         pass
 
@@ -51,10 +58,11 @@ def _get_build_status() -> dict:
             lines = BUILD_STATUS_PATH.read_text(encoding="utf-8").strip().splitlines()
             status = lines[0] if lines else "idle"
             error = lines[1] if len(lines) > 1 else ""
-            return {"status": status, "error": error}
+            source = lines[2] if len(lines) > 2 else ""
+            return {"status": status, "error": error, "source": source}
     except Exception:
         pass
-    return {"status": "idle", "error": ""}
+    return {"status": "idle", "error": "", "source": ""}
 
 
 def create_app(base_dir: Path) -> Flask:
@@ -166,10 +174,11 @@ def create_app(base_dir: Path) -> Flask:
             if build_process and build_process.poll() is None:
                 return jsonify({"status": "building", "message": "Build already in progress"}), 429
 
-            _set_build_status("building")
+            _set_build_status("building", source="docker")
             build_error = None
 
             try:
+                print("[build_apk] starting packager subprocess")
                 build_process = subprocess.Popen(
                     ["python", "-m", "packager"],
                     cwd=str(Path(__file__).resolve().parent.parent),
@@ -178,7 +187,8 @@ def create_app(base_dir: Path) -> Flask:
                     text=True
                 )
             except Exception as e:
-                _set_build_status("error", str(e))
+                print(f"[build_apk] failed to start: {e}")
+                _set_build_status("error", str(e), source="docker")
                 build_error = str(e)
                 return jsonify({"status": "error", "error": str(e)}), 500
 
@@ -186,14 +196,18 @@ def create_app(base_dir: Path) -> Flask:
                 global build_process, build_error
                 try:
                     stdout, _ = build_process.communicate()
+                    print(f"[build_apk] process finished rc={build_process.returncode}")
                     if build_process.returncode == 0:
-                        _set_build_status("done")
+                        print("[build_apk] build succeeded")
+                        _set_build_status("done", source="docker")
                     else:
                         err_msg = stdout.strip()[-500:] if stdout else "Build failed"
-                        _set_build_status("error", err_msg)
+                        print(f"[build_apk] build failed: {err_msg}")
+                        _set_build_status("error", err_msg, source="docker")
                         build_error = err_msg
                 except Exception as e:
-                    _set_build_status("error", str(e))
+                    print(f"[build_apk] exception: {e}")
+                    _set_build_status("error", str(e), source="docker")
                     build_error = str(e)
                 finally:
                     build_process = None
@@ -242,6 +256,87 @@ def create_app(base_dir: Path) -> Flask:
         if not APK_PATH.exists():
             return jsonify({"error": "APK not built yet"}), 404
         return send_file(str(APK_PATH), as_attachment=True, download_name="final_signed.apk")
+
+    @app.route("/download_generated_app", methods=["POST"])
+    def download_generated_app():
+        print("[download_generated_app] hit")
+        try:
+            data = request.get_json(silent=True) or request.form
+            repo_url = data.get("repo_url") if hasattr(data, "get") else (data.get("repo_url") if isinstance(data, dict) else None)
+
+            if not repo_url:
+                ini = load_ini(Path(__file__).resolve().parent.parent / "choices.ini")
+                repo_url = ini.get("public", "repo_url", fallback=None)
+                print(f"[download_generated_app] using default repo_url from choices.ini: {repo_url}")
+
+            if not repo_url:
+                return jsonify({"error": "repo_url is required. Set [public] repo_url in choices.ini"}), 400
+
+            repo_url = repo_url.strip().rstrip("/")
+            m = re.match(r"https?://github\.com/([^/]+)/([^/]+)", repo_url)
+            if not m:
+                return jsonify({"error": "Invalid GitHub repo URL"}), 400
+
+            owner = m.group(1)
+            repo = m.group(2)
+            print(f"[download_generated_app] owner={owner} repo={repo}")
+
+            _set_build_status("building", source="github")
+            print("[download_generated_app] build_status set to building")
+
+            artifact_url = None
+            for branch in ["main", "master"]:
+                url = f"https://nightly.link/{owner}/{repo}/workflows/build-apk/{branch}/app.zip"
+                print(f"[download_generated_app] trying {url}")
+                try:
+                    r = requests.get(url, stream=True, timeout=60, allow_redirects=True)
+                    print(f"[download_generated_app] status={r.status_code}")
+                    if r.status_code == 200:
+                        artifact_url = url
+                        break
+                except requests.RequestException as e:
+                    print(f"[download_generated_app] request failed: {e}")
+                    continue
+
+            if not artifact_url:
+                _set_build_status("error", "No CI build artifact found for this fork on main/master", source="github")
+                return jsonify({"error": "No CI build artifact found for this fork on main/master"}), 404
+
+            print(f"[download_generated_app] downloading {artifact_url}")
+            with tempfile.TemporaryDirectory() as tmpdir:
+                zip_path = Path(tmpdir) / "app.zip"
+                with requests.get(artifact_url, stream=True, timeout=60) as r:
+                    r.raise_for_status()
+                    with open(zip_path, "wb") as f:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            if chunk:
+                                f.write(chunk)
+
+                apk_path = None
+                with zipfile.ZipFile(zip_path, "r") as zf:
+                    for name in zf.namelist():
+                        if name.endswith(".apk"):
+                            apk_path = Path(tmpdir) / Path(name).name
+                            with open(apk_path, "wb") as f:
+                                f.write(zf.read(name))
+                            break
+
+                if not apk_path or not apk_path.exists():
+                    return jsonify({"error": "app.zip did not contain an APK"}), 422
+
+                APK_PATH.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(apk_path, APK_PATH)
+                print(f"[download_generated_app] saved APK to {APK_PATH}")
+
+            _set_build_status("done", source="github")
+            print("[download_generated_app] build_status set to done")
+            return jsonify({"status": "done"})
+        except requests.RequestException as e:
+            print(f"[download_generated_app] network error: {e}")
+            return jsonify({"error": f"Download failed: {e}"}), 502
+        except Exception as e:
+            traceback.print_exc()
+            return jsonify({"error": str(e)}), 500
 
     @app.route("/")
     def index():

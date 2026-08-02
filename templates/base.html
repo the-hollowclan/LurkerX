@@ -34,7 +34,7 @@ body {
 }
 
 .sidebar {
-  width: 260px;
+  width: 280px;
   background: var(--panel);
   border-right: 1px solid var(--border);
   display: flex;
@@ -422,13 +422,17 @@ body {
       </div>
     </div>
     <div class="sidebar-footer">
-      <button id="build-apk-btn" class="btn btn-primary">
+      <button id="build-docker-btn" class="btn btn-primary">
         <span class="material-icons-round">build</span>
         Build APK (DOCKER)
       </button>
+      <button id="build-github-btn" class="btn btn-secondary">
+        <span class="material-icons-round">cloud_sync</span>
+        Build APK (GITHUB CI)
+      </button>
       <a id="download-apk-link" class="btn btn-secondary" href="/download_apk">
         <span class="material-icons-round">download</span>
-        Download APK (DOCKER)
+        Download App
       </a>
       <div id="build-status" class="build-status"></div>
     </div>
@@ -719,8 +723,8 @@ body {
   </script>
   {% if not unauthorized %}
   <script>
-    document.getElementById("build-apk-btn").addEventListener("click", function () {
-      const btn = document.getElementById("build-apk-btn");
+    document.getElementById("build-docker-btn").addEventListener("click", function () {
+      const btn = document.getElementById("build-docker-btn");
       btn.disabled = true;
       btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Building...';
       fetch("/build_apk", { method: "POST" })
@@ -728,45 +732,81 @@ body {
         .then((data) => {
           if (data.status !== "building") {
             btn.disabled = false;
-            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK (DOCKER)';
           }
         })
         .catch(() => {
           btn.disabled = false;
-          btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+          btn.innerHTML = '<span class="material-icons-round">build</span>Build APK (DOCKER)';
         });
     });
+
+    document.getElementById("build-github-btn").addEventListener("click", function () {
+      const btn = document.getElementById("build-github-btn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Build in progress';
+      fetch("/download_generated_app", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ repo_url: "" })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "done") {
+          window.location.href = "/download_apk";
+        } else {
+          throw new Error(data.error || "Failed");
+        }
+      })
+      .catch(err => {
+        alert("Build failed: " + err.message);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-icons-round">cloud_sync</span>Build APK (GITHUB CI)';
+      });
+    });
+
     setInterval(() => {
       fetch("/build_status")
         .then(res => res.json())
         .then(data => {
-          const btn = document.getElementById("build-apk-btn");
+          const dockerBtn = document.getElementById("build-docker-btn");
+          const githubBtn = document.getElementById("build-github-btn");
           const link = document.getElementById("download-apk-link");
           const status = document.getElementById("build-status");
           if (data.status === "building") {
-            btn.disabled = true;
-            btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Building...';
+            dockerBtn.disabled = true;
+            dockerBtn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Build in progress';
+            githubBtn.disabled = true;
+            githubBtn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Build in progress';
             link.style.pointerEvents = "none";
             link.style.opacity = "0.4";
-            status.textContent = "Building APK...";
+            status.textContent = "Build in progress";
             status.style.color = "var(--accent)";
           } else if (data.status === "error") {
-            btn.disabled = false;
-            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
-            link.style.pointerEvents = "auto";
-            link.style.opacity = "1";
+            dockerBtn.disabled = false;
+            dockerBtn.innerHTML = '<span class="material-icons-round">build</span>Build APK (DOCKER)';
+            githubBtn.disabled = false;
+            githubBtn.innerHTML = '<span class="material-icons-round">cloud_sync</span>Build APK (GITHUB CI)';
+            link.style.pointerEvents = "none";
+            link.style.opacity = "0.4";
             status.textContent = "Build failed";
             status.style.color = "var(--danger)";
           } else if (data.apk_exists) {
-            btn.disabled = false;
-            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+            dockerBtn.disabled = false;
+            dockerBtn.innerHTML = '<span class="material-icons-round">build</span>Build APK (DOCKER)';
+            githubBtn.disabled = false;
+            githubBtn.innerHTML = '<span class="material-icons-round">cloud_sync</span>Build APK (GITHUB CI)';
             link.style.pointerEvents = "auto";
             link.style.opacity = "1";
-            status.textContent = "APK ready";
+            status.textContent = "App is ready";
             status.style.color = "var(--accent)";
           } else {
-            btn.disabled = false;
-            btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
+            dockerBtn.disabled = false;
+            dockerBtn.innerHTML = '<span class="material-icons-round">build</span>Build APK (DOCKER)';
+            githubBtn.disabled = false;
+            githubBtn.innerHTML = '<span class="material-icons-round">cloud_sync</span>Build APK (GITHUB CI)';
             link.style.pointerEvents = "none";
             link.style.opacity = "0.4";
             status.textContent = "APK not built yet";
