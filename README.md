@@ -30,8 +30,8 @@ Use this link to install:
 <a href="https://blacksamaritan.blogspot.com/2025/12/a-newly-emerged-mobile-spying-tool.html">
   <img src="https://img.shields.io/badge/HOW TO INSTALL AND USE(TUTORIAL)-teal?style=for-the-badge&logo=website">
 </a>
-<a href="https://github.com/the-hollowclan/LurkerX/blob/main/UsageGuide.md">
-  <img src="https://img.shields.io/badge/HOW TO USE-teal?style=for-the-badge&logo=website">
+<a href="docs/install_docker.md">
+  <img src="https://img.shields.io/badge/INSTALL USING DOCKER-teal?style=for-the-badge&logo=website">
 </a>
 
 **Disclaimer:**

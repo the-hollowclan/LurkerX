@@ -26,10 +26,17 @@ jobs:
         id: version
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            VERSION="${{ github.event.inputs.version }}"
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF_NAME}"
           else
-            echo "version=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+            VERSION="$(curl -sL https://api.github.com/repos/the-hollowclan/LurkerX/releases/latest | jq -r .tag_name)"
           fi
+          if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
+            echo "Failed to resolve release version" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -45,7 +52,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends curl wget unzip
+          sudo apt-get install -y --no-install-recommends curl wget unzip jq
           pip install --no-cache-dir -r requirements.txt
 
       - name: Download apktool

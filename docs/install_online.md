@@ -80,8 +80,11 @@ alias =
 
 ```
 
-12. Now check this important part of your page, the malware is built and stored inside GitHub
-12. Now go back to your web service in Render.com and click Manual Deploy. Wait for about 5 minutes for Render to rebuild the server for your URL. 
+12. Now in your browser open your repo's page.
+
+13. Wait for about 10 minutes and refresh. 
+
+14.  Go to releases. You should see `app.apk` built and 
 
 13. After that open the link Render gave you in your browser:
 
