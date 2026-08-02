@@ -67,7 +67,8 @@ jobs:
           test -s /tmp/apktool.jar
           printf '#!/bin/sh\nexec java -jar /tmp/apktool.jar "$@"\n' > /tmp/apktool
           chmod +x /tmp/apktool
-          echo "/tmp/apktool" >> $GITHUB_PATH
+          cp /tmp/apktool /tmp/apktool.jar ./
+          echo "/tmp" >> $GITHUB_PATH
 
       - name: Download release assets
         run: |
