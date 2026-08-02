@@ -107,13 +107,3 @@ jobs:
           name: app
           path: result/app.apk
           retention-days: 30
-
-      - name: Print download URL
-        run: |
-          ARTIFACT_ID=$(curl -sL \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/the-hollowclan/LurkerX/actions/runs/${{ github.run_id }}/artifacts" \
-            | jq -r '.artifacts[] | select(.name == "app") | .id')
-          if [ -n "$ARTIFACT_ID" ]; then
-            echo "Download APK: https://nightly.link/the-hollowclan/LurkerX/actions/artifacts/${ARTIFACT_ID}.zip"
-          fi
