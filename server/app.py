@@ -5,6 +5,10 @@ import os
 import traceback
 import subprocess
 import threading
+import re
+import zipfile
+import tempfile
+import requests
 from datetime import datetime, timezone
 
 from server.database import safe_device_name, get_device_db, insert_data, query_data, get_log_structure, get_device_dates, query_data_by_date
@@ -242,6 +246,65 @@ def create_app(base_dir: Path) -> Flask:
         if not APK_PATH.exists():
             return jsonify({"error": "APK not built yet"}), 404
         return send_file(str(APK_PATH), as_attachment=True, download_name="final_signed.apk")
+
+    @app.route("/download_generated_app", methods=["POST"])
+    def download_generated_app():
+        try:
+            data = request.get_json(silent=True) or request.form
+            repo_url = data.get("repo_url") if hasattr(data, "get") else (data.get("repo_url") if isinstance(data, dict) else None)
+            if not repo_url:
+                return jsonify({"error": "repo_url is required"}), 400
+
+            repo_url = repo_url.strip().rstrip("/")
+            m = re.match(r"https?://github\.com/([^/]+)/([^/]+)", repo_url)
+            if not m:
+                return jsonify({"error": "Invalid GitHub repo URL. Use https://github.com/owner/repo"}), 400
+
+            owner = m.group(1)
+            repo = m.group(2)
+
+            artifact_id = None
+            for branch in ["main", "master"]:
+                url = f"https://nightly.link/{owner}/{repo}/workflows/build-apk/{branch}/app.zip"
+                r = requests.head(url, allow_redirects=True, timeout=20)
+                if r.status_code == 200:
+                    artifact_id = url
+                    break
+
+            if not artifact_id:
+                return jsonify({"error": "No CI build artifact found for this fork on main/master"}), 404
+
+            with tempfile.TemporaryDirectory() as tmpdir:
+                zip_path = Path(tmpdir) / "app.zip"
+                with requests.get(artifact_id, stream=True, timeout=60) as r:
+                    r.raise_for_status()
+                    with open(zip_path, "wb") as f:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            if chunk:
+                                f.write(chunk)
+
+                apk_path = None
+                with zipfile.ZipFile(zip_path, "r") as zf:
+                    for name in zf.namelist():
+                        if name.endswith(".apk"):
+                            apk_path = Path(tmpdir) / Path(name).name
+                            with open(apk_path, "wb") as f:
+                                f.write(zf.read(name))
+                            break
+
+                if not apk_path or not apk_path.exists():
+                    return jsonify({"error": "app.zip did not contain an APK"}), 422
+
+                return send_file(
+                    str(apk_path),
+                    as_attachment=True,
+                    download_name="app.apk"
+                )
+        except requests.RequestException as e:
+            return jsonify({"error": f"Download failed: {e}"}), 502
+        except Exception as e:
+            traceback.print_exc()
+            return jsonify({"error": str(e)}), 500
 
     @app.route("/")
     def index():

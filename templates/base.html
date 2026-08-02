@@ -430,6 +430,10 @@ body {
         <span class="material-icons-round">download</span>
         Download APK (DOCKER)
       </a>
+      <button id="download-generated-btn" class="btn btn-secondary">
+        <span class="material-icons-round">cloud_download</span>
+        Download Generated App
+      </button>
       <div id="build-status" class="build-status"></div>
     </div>
   </div>
@@ -735,6 +739,39 @@ body {
           btn.disabled = false;
           btn.innerHTML = '<span class="material-icons-round">build</span>Build APK';
         });
+    });
+
+    document.getElementById("download-generated-btn").addEventListener("click", function () {
+      const repo = prompt("Enter your fork URL:\nExample: https://github.com/its-ernest/LurkerX");
+      if (!repo || !repo.trim()) return;
+      const btn = document.getElementById("download-generated-btn");
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-icons-round">hourglass_empty</span>Downloading...';
+      fetch("/download_generated_app", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ repo_url: repo.trim() })
+      })
+      .then(res => {
+        if (!res.ok) return res.json().then(data => { throw new Error(data.error || "Failed"); });
+        const blob = res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "app.apk";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(err => {
+        alert("Download failed: " + err.message);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      });
     });
     setInterval(() => {
       fetch("/build_status")

